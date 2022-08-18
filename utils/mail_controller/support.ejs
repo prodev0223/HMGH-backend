@@ -1,0 +1,85 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <style type="text/css">
+        
+            .div-content {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                padding: 25px;
+                background-color: #ffffff;
+                width: 430px;
+                border-radius: 4px;
+            }
+            .div-title {
+                padding: 15px 0;
+            }
+​
+            .div-title::after {
+                background: #e5e4e4 none repeat scroll 0 0;
+                content: "";
+                display: inline-block;
+                height: 1px;
+                width: 430px;
+                z-index: -1;
+            }
+​
+            .div-title p {
+                font-size: 30px;
+                font-weight: bold;
+                margin: 0;
+                color: rgb(119, 192, 67);
+            }
+            .btn-reset {
+                margin: 20px auto;
+                padding: 10px 25px;
+                background-color: rgb(119, 192, 67);
+                border: 1px solid rgb(119, 192, 67);
+                font-size: 15px;
+                color: #ffffff;
+                font-weight: bold;
+                border-radius: 2px;
+            }
+            .btn-reset:hover,
+            .btn-reset:focus, 
+            .btn-reset:active {
+                outline: unset;
+                margin: 20px auto;
+                padding: 10px 25px;
+                background-color: rgb(133, 198, 42);
+                border: 1px solid rgb(133, 198, 42);
+                font-size: 15px;
+                color: #ffffff;
+                font-weight: bold;
+                border-radius: 2px;
+            }
+            .div-footer {
+                margin-top: 20px;
+                border-top: 1px solid #e5e4e4;
+            } 
+            .div-footer p {
+                font-size: 14px;
+                color: #736d6d;
+            }
+            .text-center {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body style="background-color: #f2f2f2">
+        <div class="div-content">
+            <div class="div-title">
+                <p>From: <%- from_email %></p>
+            </div>
+            <div class="div-title">
+                <p>Content:</p>
+            </div>
+            <div>
+                <p><%- support_content %></p>
+            </div>
+            
+        </div>
+    </body>
+</html>

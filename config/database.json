@@ -1,0 +1,12 @@
+{
+    "type": 1,
+    "typename": "mongoose",
+    "host": "127.0.0.1",
+    "port": 27017,
+    "username": "",
+    "password": "",
+    "database": "hmgh",
+    "modelList": [
+        
+    ]
+}

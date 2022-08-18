@@ -1,0 +1,136 @@
+{
+    "name":"users",
+    "path":"users.controller.js",
+    "controllers":[
+        {
+            "path":"/",
+            "function":"index",
+            "authRequired":0
+        },
+        {
+            "path":"/login",
+            "function":"login",
+            "authRequired":0,
+            "requireFields":["username","password"]
+        },
+        {
+            "path":"/signup",
+            "function":"signup",
+            "authRequired":0,
+            "requireFields":["username","password"]
+        },
+        {
+            "path":"/signup_with_phone",
+            "function":"signupWithPhone",
+            "authRequired":0,
+            "requireFields":["phoneNumber" , "password"]
+        },
+        
+        {
+            "path":"/signin_with_facebook",
+            "function":"signinWithFacebook",
+            "authRequired":0,
+            "requireFields":["email" , "accessToken"]
+        },
+        {
+            "path":"/get_user_avatar",
+            "function":"getUserAvatar",
+            "authRequired":0,
+            "requireFields":["userId" ]
+        },
+        {
+            "path":"/update_profile",
+            "function":"updateUserInfo",
+            "method": 1,
+            "requireFields":["userInfo"]
+        },
+        {
+            "path":"/get_user_profile",
+            "function":"getUserById",
+            "method": 1
+        },
+        {
+            "path":"/get_my_profile",
+            "function":"getMyProfile",
+            "method": 1
+        },
+        {
+            "path":"/get_list_user",
+            "function":"getListUser",
+            "method": 1
+        },
+        {
+            "path":"/add_new_user",
+            "function":"addNewUser",
+            "method": 1,
+            "requireFields":["userInfo"],
+            "note":"userInfo: password , role , email is required field"
+        },
+        {
+            "path":"/forgot_password",
+            "function":"forgotPassRequest",
+            "method": 1,
+            "requireFields":["email"],
+            "authRequired":0
+        },
+        {
+            "path":"/confirm_forgot_password",
+            "function":"confirmForgotPassword",
+            "method": 1,
+            "requireFields":["email", "keyCode"],
+            "authRequired":0
+        },
+        {
+            "path":"/change_password",
+            "function":"changePassword",
+            "method": 1,
+            "requireFields":["token", "password"]
+        },
+        {
+            "path":"/login_with_google",
+            "function":"loginGoogleWithAccessToken",
+            "method": 1,
+            "authRequired":0,
+            "requireFields":["accessToken"],
+            "note":"access token required"
+        },
+        {
+            "path":"/logout",
+            "function":"logout",
+            "note":"need delete cookie on client site"
+        },
+        {
+            "path":"/getRoles",
+            "function":"getUserRole",
+            "requireValidData":1,
+            "method":1
+        },
+        {
+            "path":"/send_notification",
+            "function":"sendNotificationFromAdminbackend",
+            "method":1
+        },
+        {
+            "path":"/get_user_notifications",
+            "function":"getUserNotifications",
+            "method":1
+        },
+        {
+            "path":"/upload_avatar",
+            "function":"uploadSingleImage",
+            "method": 1,
+            "middleware":["upload.single.image"]
+        },
+        {
+            "path":"/update_fcm_token",
+            "function":"updateFcmToken",
+            "method": 1,
+            "authRequired":0,
+            "requireFields":["fcmToken"]
+        }
+    ],
+    "middleware":[
+        "permission", 
+        "checkdata"
+    ]
+}

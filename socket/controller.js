@@ -1,0 +1,182 @@
+var Mongoose =  require( 'mongoose');
+var UserModel = require('../database/User');
+var LoginModel = require('../database/Login');
+
+var Constant = require('../constant')
+var request = require('request')
+var Promise = require('bluebird')
+var fs = require('fs-extra');
+var moment = require('moment')
+fs = Promise.promisifyAll(fs);
+var debug = require('debug')(Constant.debug_name + ':socket');
+
+var parseCookie = require('./parsecookie');
+
+// var socketResult = 'socket_result';
+var __ = require('i18n').__;
+
+var UserRoles = UserModel.getUserRole();
+const ejs = require('ejs')
+const path = require('path');
+
+debug('init socket');
+
+const BaseSocketController = require('./base');
+
+class ChatController {
+  constructor() {
+    var self = this;
+    this.users = {};
+    this.fcmTokens = {};
+    this.socketsOfUser = {};
+    this.io = require('socket.io')();
+    this.nspApi = this.io.of('api');
+    // this.nspAdmin = this.io.of('admin');
+    // this.nspFrontend = this.io.of('frontend');
+    function respUnauthenticate(error, next) {
+      let err = new Error(__('c'));
+      err.data = { type: 'authentication_error', detail: error };
+      debug('check login fail', JSON.stringify(err));
+      return next(err);
+    }
+
+    LoginModel.aggregate([
+      {
+        $group: {
+          _id: '$user',
+          items: { $addToSet: '$fcmToken' }
+        }
+      }
+    ]).then((logins) => {
+      logins.forEach((login) => {
+        this.fcmTokens[login._id.toString()] = login.items;
+      })
+      // debug('fcmTokens',this.fcmTokens);
+    }).then(() => {
+      debug('init namespace root');
+      this.nspApi.use(async function (socket, next) {
+        let token = socket.handshake.query.token || parseCookie.get('ddp_token', socket.request.headers.cookie) ||socket.handshake.headers.token ;
+        debug('get token', token);
+        if (!token) return respUnauthenticate('Token required', next);
+        try {
+          let user = await self.checkLogin(socket, token);
+          let userId = user._id.toString();
+          socket.user = user;
+          socket.join(userId);
+
+          if (!self.socketsOfUser[userId] || self.socketsOfUser[userId].length == 0) {
+            self.socketsOfUser[userId] = [socket.id];
+          } else {
+            if (self.socketsOfUser[userId].indexOf(socket.id) == -1) {
+              self.socketsOfUser[userId].push(socket.id);
+            }
+          }
+
+          next();
+          // debug('nspApi', self.users[userId])
+        } catch (e) {
+          respUnauthenticate(e, next);
+        }
+      })
+    //   this.nspFrontend.use(function (socket, next) {
+    //     socket.join('frontend');
+    //     next();
+    //   })
+    //   this.nspAdmin.use(async function (socket, next) {
+    //     let token = socket.handshake.query.token || parseCookie.get('ddp_token', socket.request.headers.cookie);
+
+    //     let error = 'token missing';
+        
+    //     try {
+    //       if (token) {
+    //         await self.checkRole(socket, { token: token }, UserRoles.Admin);
+    //         return next();
+    //       }
+    //     } catch (e) {
+    //       error = e;
+    //     }
+    //     respUnauthenticate(error, next);
+    //   });
+
+      debug('add socket handler');
+      this.addSocketHandler();
+      this.addEventHandler();
+      debug('init socket finish');
+      this.emit('init-finish')
+    }).catch(e => {
+      debug('init socket error ' + JSON.stringify(e));
+    }).bind(this);
+
+    this.on('init-finish', () => {
+      // schedule to notify
+    })
+  }
+
+
+  
+
+  addSocketHandler() {
+    if (typeof this.io === 'undefined') {
+      debug('io undefined');
+      return;
+    }
+    var that = this;
+    this.nspApi.on('connection',  function(socket){
+        require('./namespaces/book') (socket);
+    });
+    
+  }
+
+
+  addEventHandler() {
+
+  }
+
+  
+
+  checkLogin(socket, token, callback) {
+    debug('check login ' + token)
+    // var self = this;
+    return new Promise(async (resolve, reject) => {
+      try {
+        let login = await LoginModel.checkToken(token);
+        resolve(login.user);
+      } catch (error) {
+        if (error) {
+          if (error == -1) {
+            BaseSocketController._emitData(socket, 'login_error', 0, __('UserPermissionDeny'));
+            return reject(__('UserPermissionDeny'));
+          } else if (error == 1) {
+            BaseSocketController._emitData(socket, 'login_error', 0, __('UserPermissionDeny'));
+            return reject(__('UserPermissionDeny'));
+          } else if (error == 2) {
+            BaseSocketController._emitData(socket, 'login_error', 0, __('UserBanned'));
+            return reject(__('UserBanned'));
+          } else {
+            BaseSocketController._emitData(socket, 'login_error', 0, error.toString());
+            return reject(error.toString());
+          }
+        }
+
+        BaseSocketController._emitData(socket, 'login_error', 0, __('ErrorUnknown'));
+        reject(new Error('Unknown error'));
+      }
+    }).asCallback(callback);
+  }
+  
+  
+  emitToRoom(room , event , data){
+    this.io.to(room ).emit()
+  }
+  
+}
+
+
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
+util.inherits(ChatController, EventEmitter);
+
+const instance = new ChatController();
+Object.freeze(instance);
+module.exports = instance;
+// module.exports.socket_result = socketResult;
