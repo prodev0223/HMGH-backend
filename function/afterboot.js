@@ -1,8 +1,11 @@
 
 var UserModel = require('../database/User')
+var SchoolCommunityModel = require('../database/SchoolCommunity')
 var Utility = require('../utility');
 async function initDefaultValues(){
     initUser();
+
+    initSchoolCommunities();
 }
 
 function initUser(){
@@ -14,6 +17,16 @@ function initUser(){
         return Promise.resolve();
     }).then(user => {
         
+    }).catch(e => {
+    });
+}
+
+function initSchoolCommunities(){
+    SchoolCommunityModel.countDocuments ({ 'name': 'Chicago' }).then(number => {
+        if (!number) {
+        return SchoolCommunityModel.create({ 'name': 'Chicago' });
+        }
+        return Promise.resolve();
     }).catch(e => {
     });
 }

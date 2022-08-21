@@ -12,6 +12,13 @@
             "path": "/users",
             "description": "",
             "configFile": "user.config.json"
+        },
+        {
+            "name": "schools",
+            "pathToFile": "./routes/schools",
+            "path": "/schools",
+            "description": "",
+            "configFile": "school.config.json"
         }
     ]
 }

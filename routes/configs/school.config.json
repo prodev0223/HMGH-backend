@@ -1,0 +1,36 @@
+{
+    "name":"school",
+    "path":"school.controller.js",
+    "controllers":[
+        {
+            "path":"/",
+            "function":"index",
+            "authRequired":0
+        },
+        {
+            "path":"/get_list_communites",
+            "function":"getListCommunicatesServed",
+            "authRequired":0
+        },
+        {
+            "path":"/create_community_served",
+            "function":"createCommunicatesServed",
+            "minimumRoleAccepted":900
+        },
+        {
+            "path":"/edit_community_served",
+            "function":"createCommunicatesServed",
+            "minimumRoleAccepted":900
+        },
+        {
+            "path":"/remove_community_served",
+            "function":"createCommunicatesServed",
+            "minimumRoleAccepted":900
+        }
+
+    ],
+    "middleware":[
+        "permission", 
+        "checkdata"
+    ]
+}

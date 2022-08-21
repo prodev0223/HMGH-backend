@@ -62,7 +62,8 @@ var UserSchema = new Schema({
     role: { type: Number, default: 2 },
     expiredAt: { type: Date, default: null },
     balance: { type: Number, default: 0 },
-  
+    schoolInfo: { type: Schema.Types.ObjectId, ref: 'SchoolInfoSchema' },
+    
 });
 
 UserSchema.virtual('noNeedOldPwd').get(() => {
@@ -100,6 +101,8 @@ class UserModel extends mongoose.Model {
     static getRoles(){
         return Promise.resolve(UserRole)
     }
+
+    
 
     static async createUserWithEmail(info, callback) {
         if (typeof info == 'undefined' || typeof info.email == 'undefined' || typeof info.password == 'undefined') {
