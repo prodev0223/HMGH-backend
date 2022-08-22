@@ -19,6 +19,13 @@
             "path": "/schools",
             "description": "",
             "configFile": "school.config.json"
+        },
+        {
+            "name": "providers",
+            "pathToFile": "./routes/providers",
+            "path": "/providers",
+            "description": "",
+            "configFile": "provider.config.json"
         }
     ]
 }

@@ -10,6 +10,7 @@ var ContactType = {
 
 
 var StudentInfoSchema = new Schema({
+    id:Number,
     contactType: Number,
     name: String,
     valueForContact: String,

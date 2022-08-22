@@ -92,7 +92,12 @@ class UserController extends BaseController {
             }
             body.schoolInfo = schoolInfo;
         }else if(body.role == UserModel.UserRole.Provider){
-
+            var providerInfo = await SchoolUserBridge.validAndCreateProviderInfo(body);
+            
+            if(!providerInfo){
+                return BaseController.generateMessage(res, 'Not enough data for create school info');
+            }
+            body.providerInfo = providerInfo;
         }else if(body.role == UserModel.UserRole.Parent){
 
         }else{

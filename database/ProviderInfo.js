@@ -2,20 +2,94 @@ var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 var UserModel = require('./User')
-var ContactType = {
-    address: 1,
-    gmail: 2, 
-    here: 0
-}
+var ContactNumberType = [
+    'Home',
+    'Work',
+    'Mobile',
+    'Fax',
+];
 
+var EmailType = [
+    'Personal',
+    'Work'
+];
+
+var SkillSet = [
+    "Early Childhood",
+    "General Studies",
+    "Homework Assistance",
+    "Kriah Specialist",
+    "Limudei Kodesh",
+    "Math",
+    "OT",
+    "OT – Carry over",
+    "Play Therapy",
+    "Reading Specialist",
+    "Referrer – an admin is of type referrer, this option is only available to admin.",
+    "Social Worker",
+    "Speech Therapy",
+];
+
+var AcademicLevel =[
+    'Early education',
+    'Nursery',
+    'Kindergarten',
+    'Grades 1,2,3,4,5',
+    'Middle',
+    'Grades 7,8',
+    'Grades 9,10,11,12',
+    'College / post high school',
+];
+
+var SreenTime = ['AM','PM'];
+
+var AcademicLevelSchema = {
+    level: Number,
+    rate:Number
+};
+
+var ContactNumberSchema = {
+    level: Number,
+    rate:Number
+};
+
+var ContactEmailSchema = {
+    level: Number,
+    rate:Number
+};
 
 var ProviderInfoSchema = new Schema({
-    contactType: Number,
-    name: String,
-    valueForContact: String,
-    sessions: [SchoolSessionSchema],
-    techContactRef: [String],
-    studentContactRef:[String],
+    id:Number,
+    name:{type:String , require:true},
+    referred:String,
+    serviceAddress:{type:String , require:true},
+    billingAddress:{type:String , require:true},
+    cityConnection:{type:String , require:true},
+    licenseNumber:String,
+    agency:String,
+    contactNumber:[ContactNumberSchema],
+    contactEmail:[ContactEmailSchema],
+    proExp: {type:String , require:true},
+
+    skillSet: {type:Number , require:true},
+    yearExp: {type:Number , require:true},
+    SSN:{type:Number , require:true},
+    serviceableSchool: {type:Number , require:true},
+    academicLevel:[AcademicLevelSchema],
+    W9FormPath: {type:String , require:true},
+    references: String,
+    publicProfile:String,
+    isSeparateEvaluationRate:{type:Number ,default:1},
+    separateEvaluationRate:{type:Number ,default:0},
+    isHomeVisit: {type:Number ,default:1},
+    privateOffice:{type:Number ,default:1},
+    isReceiptsProvided: {type:Number ,default:1},
+    isNewClientScreening:{type:Number ,default:1},
+    screeningTime:{type:Number ,default:1},
+    sessionsInSchool: [{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
+    isPrivateSession: {type:Number ,default:1},
+    cancellationWindow:{type:Number ,default:1},
+    cancellationFee:{type:Number ,default:1},
 });
 
 ProviderInfoSchema.pre('save', function(next) {
@@ -96,7 +170,10 @@ class ProviderInfoModel extends Model {
 
 mongoose.model(ProviderInfoModel, ProviderInfoSchema);
 module.exports = ProviderInfoModel;
-module.exports.ProviderInfoType = ProviderInfoType;
+module.exports.ContactNumberType = ContactNumberType;
+module.exports.EmailType = EmailType;
+module.exports.SkillSet = SkillSet;
+module.exports.AcademicLevel= AcademicLevel;
 Constant.models['ProviderInfo'] = {
     name: ProviderInfoModel.name,
     collection: ProviderInfoModel.collection.name

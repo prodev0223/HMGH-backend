@@ -79,9 +79,9 @@
             "note":"need delete cookie on client site"
         },
         {
-            "path":"/getRoles",
+            "path":"/get_roles",
             "function":"getUserRole",
-            "requireValidData":1,
+            "authRequired":0,
             "method":1
         },
         {

@@ -3,3 +3,4 @@ package-lock.json
 render_image
 .env
 yarn.lock
+public/uploads/*

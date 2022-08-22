@@ -3,6 +3,7 @@ var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 
 var SchoolCommunitySchema = new Schema({
+    id:Number,
     name: String,
 });
 

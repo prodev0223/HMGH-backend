@@ -1,29 +1,16 @@
 var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
-var UserModel = require('./User')
-var ContactType = {
-    address: 1,
-    gmail: 2, 
-    here: 0
-}
 
-var SchoolInfoSchema = new Schema({
-    // contactType: Number,
+var CityConnectionSchema = new Schema({
     id:Number,
     name: String,
-    communityServed: {type: Schema.Types.ObjectId, ref: 'SchoolCommunityModel'},
-    valueForContact: String,
-    sessionsInSchool: [{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
-    sessionsAfterSchool: [{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
-    techContactRef: [String],
-    studentContactRef:[String],
 });
 
-SchoolInfoSchema.pre('save', function(next) {
+CityConnectionSchema.pre('save', function(next) {
   var doc = this;
   
-  SchoolInfoModel.findOne({}).sort('-id').exec(function(err,  last){
+  CityConnectionModel.findOne({}).sort('-id').exec(function(err,  last){
       
         if(doc.id > 0){
             next();
@@ -40,21 +27,21 @@ SchoolInfoSchema.pre('save', function(next) {
 
 var PublicFields = [];
 
-class SchoolInfoModel extends Model {
-    static createSchoolInfo( data , callback) {
+class CityConnectionModel extends Model {
+    static createCityConnection( data , callback) {
 
-        return SchoolInfoModel.create(data ,callback)
+        return CityConnectionModel.create(data ,callback)
     }
 
-    static updateSchoolInfo( data, callback){
-        return SchoolInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
+    static updateCityConnection( data, callback){
+        return CityConnectionModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
 
-    static getSchoolInfo(id , callback){
-        return SchoolInfoModel.findById(id , callback);
+    static getCityConnection(id , callback){
+        return CityConnectionModel.findById(id , callback);
     }
 
-    static getSchoolInfos(data , callback){
+    static getCityConnections(data , callback){
         let options = {};
         options['sort'] = data.sort || { dateSent: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
@@ -63,7 +50,7 @@ class SchoolInfoModel extends Model {
         if (data.filter && Object.keys(data.filter).length > 0) {
             var fArr = [];
             Object.keys(data.filter).forEach(function (value) {
-                if (SchoolInfoSchema.paths[value]) {
+                if (CityConnectionSchema.paths[value]) {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
@@ -87,18 +74,18 @@ class SchoolInfoModel extends Model {
             });
         }
         options.select = PublicFields;
-        return SchoolInfoModel.paginate(filter, options, callback);
+        return CityConnectionModel.paginate(filter, options, callback);
     }
 
-    static deleteSchoolInfo(id , callback){
-        return SchoolInfoModel.findByIdAndRemove(id , callback);
+    static deleteCityConnection(id , callback){
+        return CityConnectionModel.findByIdAndRemove(id , callback);
     }
 }
 
 
-mongoose.model(SchoolInfoModel, SchoolInfoSchema);
-module.exports = SchoolInfoModel;
-Constant.models['SchoolInfo'] = {
-    name: SchoolInfoModel.name,
-    collection: SchoolInfoModel.collection.name
+mongoose.model(CityConnectionModel, CityConnectionSchema);
+module.exports = CityConnectionModel;
+Constant.models['CityConnection'] = {
+    name: CityConnectionModel.name,
+    collection: CityConnectionModel.collection.name
 };

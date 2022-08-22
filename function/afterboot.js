@@ -2,6 +2,7 @@
 var UserModel = require('../database/User')
 var SchoolCommunityModel = require('../database/SchoolCommunity')
 var SchoolInfoModel = require('../database/SchoolInfo')
+var CityConnectionModel = require('../database/CityConnection')
 
 const SchoolUserBridge = require('../routes/bridge/school_user');
 
@@ -11,6 +12,7 @@ async function initDefaultValues(){
 
     initSchoolCommunities();
     initSchoolInfo();
+    initCityConnection();
 }
 
 function initUser(){
@@ -30,6 +32,16 @@ function initSchoolCommunities(){
     SchoolCommunityModel.countDocuments ({ 'name': 'Chicago' }).then(number => {
         if (!number) {
         return SchoolCommunityModel.create({ 'name': 'Chicago' });
+        }
+        return Promise.resolve();
+    }).catch(e => {
+    });
+}
+
+function initCityConnection(){
+    CityConnectionModel.countDocuments ({ 'name': 'Chicago' }).then(number => {
+        if (!number) {
+        return CityConnectionModel.create({ 'name': 'Chicago' });
         }
         return Promise.resolve();
     }).catch(e => {

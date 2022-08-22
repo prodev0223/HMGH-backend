@@ -10,6 +10,7 @@ var ContactType = {
 
 
 var ParentInfoSchema = new Schema({
+    id:Number,
     contactType: Number,
     name: String,
     valueForContact: String,

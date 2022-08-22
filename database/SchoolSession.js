@@ -5,6 +5,7 @@ var UserModel = require('./User')
 
 
 var SchoolSessionSchema = new Schema({
+    id:Number,
     dayInWeek: Number,
     openHour: Number,
     openMin: Number,

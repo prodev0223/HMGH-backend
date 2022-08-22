@@ -1,0 +1,32 @@
+{
+    "name":"provider",
+    "path":"provider.controller.js",
+    "controllers":[
+        {
+            "path":"/",
+            "function":"index",
+            "authRequired":0
+        },
+        {
+            "path":"/get_default_values_for_provider",
+            "function":"getDefaultValuesForProvider",
+            "authRequired":0
+        },
+        {
+            "path":"/get_city_connections",
+            "function":"getCityConnection",
+            "authRequired":0
+        },
+        {
+            "path":"/upload_temp_w9_form",
+            "function":"uploadSingleImage",
+            "authRequired":0,
+            "method": 1,
+            "middleware":["uploadToTempFolder"]
+        }
+    ],
+    "middleware":[
+        "permission", 
+        "checkdata"
+    ]
+}
