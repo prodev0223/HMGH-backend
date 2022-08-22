@@ -3,6 +3,7 @@ const Constant = require('../../constant')
 const fs = require('fs-extra')
 
 const SchoolCommunityModel = require('../../database/SchoolCommunity')
+const SchoolInfoModel = require('../../database/SchoolInfo')
 
 class SchoolController extends BaseController {
     static index(req, res) {
@@ -25,8 +26,28 @@ class SchoolController extends BaseController {
         })
     }
 
-    static async validAndCreateSchoolInfo(info){
-        
+    static async getSchoolInfos(req,res){
+        SchoolInfoModel.getSchoolInfos(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, 0,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static async updateSchoolInfo(req, res){
+        SchoolInfoModel.updateSchoolInfo(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, 0,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static async getSchoolInfo(req, res){
+        SchoolInfoModel.getSchoolInfo(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, 0,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
     }
 }
 module.exports = SchoolController;

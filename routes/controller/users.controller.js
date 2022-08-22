@@ -17,6 +17,8 @@ const axios = require('axios');
 const mailController = require('../../utils/mail_controller');
 const jwt = require('jsonwebtoken');
 
+const SchoolUserBridge = require('../bridge/school_user');
+
 class UserController extends BaseController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
@@ -63,6 +65,8 @@ class UserController extends BaseController {
         })
     }
 
+    
+
     static async signup(req, res) {
         debug(req.body)
         var body = req.body;
@@ -79,6 +83,23 @@ class UserController extends BaseController {
 
         debug('signup', body);
 
+        // check type
+        if(body.role == UserModel.UserRole.School){
+            var schoolInfo = await SchoolUserBridge.validAndCreateSchoolInfo(body);
+            
+            if(!schoolInfo){
+                return BaseController.generateMessage(res, 'Not enough data for create school info');
+            }
+            body.schoolInfo = schoolInfo;
+        }else if(body.role == UserModel.UserRole.Provider){
+
+        }else if(body.role == UserModel.UserRole.Parent){
+
+        }else{
+            return  BaseController.generateMessage(res, "Not enough ");
+        }
+
+        // init account
         return UserModel.createUserWithEmail(body, function (error, user) {
             if (error) return BaseController.generateMessage(res, error);
             req.user = user;
@@ -319,19 +340,7 @@ class UserController extends BaseController {
                 NotificationUtils.sendNotification(notificationData);
                 let listNotificationPushed = []
                 for(var i= 0 ; i < userIds.length ; i++){
-                    // title: String ,
-                    // text: String ,
-                    // value: String,
-                    // message: String , 
-                    // fromUser: String ,
-                    // type: {type: Number , default: NotificationType.toAll},
-                    // toUser: {type: Schema.Types.ObjectId, ref: 'UserModel' } ,
-                    // toGroup:  {type: Number , default: 0},
-                    // toTopic:  {type: Number , default: 0},
-                    // toAll:  {type: Number , default: 0},
-                    // listFcmToken: [String] , 
-                    // isRead: {type: Number, default: 0}
-                    // click_action
+                    
                     listNotificationPushed.push({
                         title:title,
                         message: message,

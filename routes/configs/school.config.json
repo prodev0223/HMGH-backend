@@ -26,8 +26,22 @@
             "path":"/remove_community_served",
             "function":"createCommunicatesServed",
             "minimumRoleAccepted":900
+        },
+        {
+            "path":"/get_school_infos",
+            "function":"getSchoolInfos",
+            "authRequired":0
+        },
+        {
+            "path":"/update_school_info",
+            "function":"updateSchoolInfo",
+            "middleware":[]
+        },
+        {
+            "path":"/get_school_info",
+            "function":"getSchoolInfo",
+            "authRequired":0
         }
-
     ],
     "middleware":[
         "permission", 

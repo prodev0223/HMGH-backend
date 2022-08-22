@@ -9,7 +9,7 @@ var ContactType = {
 }
 
 var SchoolInfoSchema = new Schema({
-    contactType: Number,
+    // contactType: Number,
     name: String,
     communityServed: {type: Schema.Types.ObjectId, ref: 'SchoolCommunityModel'},
     valueForContact: String,
@@ -97,7 +97,6 @@ class SchoolInfoModel extends Model {
 
 mongoose.model(SchoolInfoModel, SchoolInfoSchema);
 module.exports = SchoolInfoModel;
-module.exports.SchoolInfoType = SchoolInfoType;
 Constant.models['SchoolInfo'] = {
     name: SchoolInfoModel.name,
     collection: SchoolInfoModel.collection.name

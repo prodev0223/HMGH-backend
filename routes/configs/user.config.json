@@ -17,20 +17,7 @@
             "path":"/signup",
             "function":"signup",
             "authRequired":0,
-            "requireFields":["username","password"]
-        },
-        {
-            "path":"/signup_with_phone",
-            "function":"signupWithPhone",
-            "authRequired":0,
-            "requireFields":["phoneNumber" , "password"]
-        },
-        
-        {
-            "path":"/signin_with_facebook",
-            "function":"signinWithFacebook",
-            "authRequired":0,
-            "requireFields":["email" , "accessToken"]
+            "requireFields":["username","password", "email"]
         },
         {
             "path":"/get_user_avatar",
@@ -85,14 +72,6 @@
             "function":"changePassword",
             "method": 1,
             "requireFields":["token", "password"]
-        },
-        {
-            "path":"/login_with_google",
-            "function":"loginGoogleWithAccessToken",
-            "method": 1,
-            "authRequired":0,
-            "requireFields":["accessToken"],
-            "note":"access token required"
         },
         {
             "path":"/logout",

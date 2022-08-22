@@ -81,6 +81,7 @@ var UserRole = {
     Manager:100,
     School:60,
     Provider: 30,
+    Parent:3,
     Member: 2,
     Banned: 1
 }

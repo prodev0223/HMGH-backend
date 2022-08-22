@@ -1,11 +1,16 @@
 
 var UserModel = require('../database/User')
 var SchoolCommunityModel = require('../database/SchoolCommunity')
+var SchoolInfoModel = require('../database/SchoolInfo')
+
+const SchoolUserBridge = require('../routes/bridge/school_user');
+
 var Utility = require('../utility');
 async function initDefaultValues(){
     initUser();
 
     initSchoolCommunities();
+    initSchoolInfo();
 }
 
 function initUser(){
@@ -25,6 +30,75 @@ function initSchoolCommunities(){
     SchoolCommunityModel.countDocuments ({ 'name': 'Chicago' }).then(number => {
         if (!number) {
         return SchoolCommunityModel.create({ 'name': 'Chicago' });
+        }
+        return Promise.resolve();
+    }).catch(e => {
+    });
+}
+
+function initSchoolInfo(){
+    SchoolInfoModel.countDocuments ({ 'name': 'Arie Crown' }).then(async number => {
+        if (!number) {
+            
+            
+            var arrName = ["Arie Crown",
+                "Yeshivas Tiferes Tzvi",
+                "Joan Dachs Bais Yaakov",
+                "Nursery",
+                "Playgroup",
+                ]
+            for(var i = 0 ; i <arrName.length ; i++){
+                var tempInfo = {
+                    "role":60,
+                    "communityServed":"6302788ceeebce6fb875cbcb",
+                    "valueForContact":"123 abc def",
+                    "sessionsInSchool":[
+                        {
+                            "dayInWeek":1,
+                            "openHour":7,
+                            "openMin":0,
+                            "closeHour":18,
+                            "closeMin":0
+                        },
+                        {
+                            "dayInWeek":2,
+                            "openHour":7,
+                            "openMin":0,
+                            "closeHour":18,
+                            "closeMin":0
+                        },
+                        {
+                            "dayInWeek":3,
+                            "openHour":7,
+                            "openMin":0,
+                            "closeHour":18,
+                            "closeMin":0
+                        },
+                        {
+                            "dayInWeek":4,
+                            "openHour":7,
+                            "openMin":0,
+                            "closeHour":18,
+                            "closeMin":0
+                        }
+                    ],
+                    "sessionsAfterSchool":[
+                        {
+                            "dayInWeek":0,
+                            "openHour":7,
+                            "openMin":0,
+                            "closeHour":18,
+                            "closeMin":0
+                        }
+                    ],
+                    "techContactRef":["1234","123456"],
+                    "studentContactRef":["12399","12355"]
+                };
+                tempInfo.name = arrName[i];
+                
+                await SchoolUserBridge.validAndCreateSchoolInfo(tempInfo);
+            }
+            // return SchoolCommunityModel.create(arrSchoolInfo);
         }
         return Promise.resolve();
     }).catch(e => {

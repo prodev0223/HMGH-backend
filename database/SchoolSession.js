@@ -5,7 +5,7 @@ var UserModel = require('./User')
 
 
 var SchoolSessionSchema = new Schema({
-    dayInWeek: [Number],
+    dayInWeek: Number,
     openHour: Number,
     openMin: Number,
     closeHour: Number,
@@ -92,7 +92,6 @@ class SchoolSessionModel extends Model {
 
 mongoose.model(SchoolSessionModel, SchoolSessionSchema);
 module.exports = SchoolSessionModel;
-module.exports.SchoolSessionType = SchoolSessionType;
 Constant.models['SchoolSession'] = {
     name: SchoolSessionModel.name,
     collection: SchoolSessionModel.collection.name
