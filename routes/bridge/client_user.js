@@ -14,7 +14,7 @@ async function validAndCreateSchoolSessions(info){
     });
 }
 
-async function  validAndCreateProviderInfo(info){
+async function  validAndCreateClientInfo(info){
     var {
         contactNumber,
         contactEmail,
@@ -37,5 +37,4 @@ async function  validAndCreateProviderInfo(info){
     })
 }
 
-// module.exports.validAndCreateSchoolInfo = validAndCreateSchoolInfo;
-module.exports.validAndCreateProviderInfo = validAndCreateProviderInfo;
+module.exports.validAndCreateClientInfo = validAndCreateClientInfo;

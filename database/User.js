@@ -62,8 +62,10 @@ var UserSchema = new Schema({
     role: { type: Number, default: 2 },
     expiredAt: { type: Date, default: null },
     balance: { type: Number, default: 0 },
-    schoolInfo: { type: Schema.Types.ObjectId, ref: 'SchoolInfoSchema' },
-    
+    schoolInfo: { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' },
+    providerInfo: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
+    parentInfo: { type: Schema.Types.ObjectId, ref: 'ParentInfoModel' },
+    studentInfo: [ { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' }],
 });
 
 UserSchema.virtual('noNeedOldPwd').get(() => {

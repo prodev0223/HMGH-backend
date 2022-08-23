@@ -26,6 +26,13 @@
             "path": "/providers",
             "description": "",
             "configFile": "provider.config.json"
+        },
+        {
+            "name": "clients",
+            "pathToFile": "./routes/clients",
+            "path": "/clients",
+            "description": "",
+            "configFile": "client.config.json"
         }
     ]
 }

@@ -3,6 +3,7 @@ var UserModel = require('../database/User')
 var SchoolCommunityModel = require('../database/SchoolCommunity')
 var SchoolInfoModel = require('../database/SchoolInfo')
 var CityConnectionModel = require('../database/CityConnection')
+var StudentServiceModel = require('../database/StudentService')
 
 const SchoolUserBridge = require('../routes/bridge/school_user');
 
@@ -13,6 +14,7 @@ async function initDefaultValues(){
     initSchoolCommunities();
     initSchoolInfo();
     initCityConnection();
+    initClientServices();
 }
 
 function initUser(){
@@ -46,6 +48,32 @@ function initCityConnection(){
         return Promise.resolve();
     }).catch(e => {
     });
+}
+
+function initClientServices(){
+    var arr = ['Early Childhood',
+    'General Studies',
+    'Homework Assitance',
+    'Kirah Specialist',
+    'Limudei Kodesh',
+    'Math',
+    'OT',
+    'OT- Carry over',
+    'Play Therapy',
+    'Reading Specialist',
+    'Social Worker',
+    'Speed Therapy',];
+    StudentServiceModel.countDocuments ({ 'name': arr[0] }).then(number => {
+        if (!number) {
+            var newArr = arr.map(item=>{
+                return {name: item};
+            });
+            return StudentServiceModel.create(newArr);
+        }
+        return Promise.resolve();
+    }).catch(e => {
+    });
+    
 }
 
 function initSchoolInfo(){

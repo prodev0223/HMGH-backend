@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 var UserModel = require('./User')
@@ -43,25 +43,27 @@ var AcademicLevel =[
 
 var SreenTime = ['AM','PM'];
 
-var AcademicLevelSchema = {
-    level: Number,
-    rate:Number
-};
+var ScreenWindow= ['12 hrs','24 hrs'];
 
-var ContactNumberSchema = {
+var AcademicLevelSchema = new Schema({
     level: Number,
     rate:Number
-};
+});
 
-var ContactEmailSchema = {
-    level: Number,
-    rate:Number
-};
+var ContactNumberSchema = new Schema({
+    phoneNumber: String,
+    type:Number
+});
+
+var ContactEmailSchema = new Schema({
+    email: String,
+    type:Number
+});
 
 var ProviderInfoSchema = new Schema({
     id:Number,
     name:{type:String , require:true},
-    referred:String,
+    referredToAs:String,
     serviceAddress:{type:String , require:true},
     billingAddress:{type:String , require:true},
     cityConnection:{type:String , require:true},
@@ -74,7 +76,7 @@ var ProviderInfoSchema = new Schema({
     skillSet: {type:Number , require:true},
     yearExp: {type:Number , require:true},
     SSN:{type:Number , require:true},
-    serviceableSchool: {type:Number , require:true},
+    serviceableSchool: {type:String , require:true},
     academicLevel:[AcademicLevelSchema],
     W9FormPath: {type:String , require:true},
     references: String,
@@ -86,7 +88,7 @@ var ProviderInfoSchema = new Schema({
     isReceiptsProvided: {type:Number ,default:1},
     isNewClientScreening:{type:Number ,default:1},
     screeningTime:{type:Number ,default:1},
-    sessionsInSchool: [{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
+    manualSchedule: [{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
     isPrivateSession: {type:Number ,default:1},
     cancellationWindow:{type:Number ,default:1},
     cancellationFee:{type:Number ,default:1},
@@ -174,6 +176,8 @@ module.exports.ContactNumberType = ContactNumberType;
 module.exports.EmailType = EmailType;
 module.exports.SkillSet = SkillSet;
 module.exports.AcademicLevel= AcademicLevel;
+module.exports.SreenTime = SreenTime;
+module.exports.ScreenWindow = ScreenWindow;
 Constant.models['ProviderInfo'] = {
     name: ProviderInfoModel.name,
     collection: ProviderInfoModel.collection.name

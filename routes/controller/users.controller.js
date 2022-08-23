@@ -18,6 +18,7 @@ const mailController = require('../../utils/mail_controller');
 const jwt = require('jsonwebtoken');
 
 const SchoolUserBridge = require('../bridge/school_user');
+const ProviderUserBridge = require('../bridge/provider_user');
 
 class UserController extends BaseController {
     static index(req, res) {
@@ -92,14 +93,15 @@ class UserController extends BaseController {
             }
             body.schoolInfo = schoolInfo;
         }else if(body.role == UserModel.UserRole.Provider){
-            var providerInfo = await SchoolUserBridge.validAndCreateProviderInfo(body);
+            var providerInfo = await ProviderUserBridge.validAndCreateProviderInfo(body);
             
             if(!providerInfo){
                 return BaseController.generateMessage(res, 'Not enough data for create school info');
             }
             body.providerInfo = providerInfo;
+            return;
         }else if(body.role == UserModel.UserRole.Parent){
-
+            
         }else{
             return  BaseController.generateMessage(res, "Not enough ");
         }

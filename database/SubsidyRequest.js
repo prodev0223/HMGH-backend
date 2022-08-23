@@ -1,35 +1,16 @@
 var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
-var UserModel = require('./User')
-var ContactType = {
-    address: 1,
-    gmail: 2, 
-    here: 0
-}
 
-
-var StudentInfoSchema = new Schema({
+var SubsidyRequestSchema = new Schema({
     id:Number,
-    firstName:{type:String, require:true}, 
-    lastName:{type:String, require:true}, 
-    birthday:{type:Date},
-    guardianPhone:{type:String, require:true}, 
-    guardianEmail:{type:String, require:true}, 
-    backgroundInfor:{type:String, require:true}, 
-    school:{type:String, require:true}, 
-    primaryTeacher:{type:String, require:true}, 
-    currentGrade:{type:String, require:true}, 
-    services: [ { type: Schema.Types.ObjectId, ref: 'StudentServiceModel' }],
-    hasIEP:{type:Number, default:1},
-    subsidyRequest:{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' },
-    availabilitySchedule:[{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
+    name: String,
 });
 
-StudentInfoSchema.pre('save', function(next) {
+SubsidyRequestSchema.pre('save', function(next) {
   var doc = this;
   
-  StudentInfoModel.findOne({}).sort('-id').exec(function(err,  last){
+  SubsidyRequestModel.findOne({}).sort('-id').exec(function(err,  last){
       
         if(doc.id > 0){
             next();
@@ -46,21 +27,21 @@ StudentInfoSchema.pre('save', function(next) {
 
 var PublicFields = [];
 
-class StudentInfoModel extends Model {
-    static createStudentInfo( data , callback) {
+class SubsidyRequestModel extends Model {
+    static createSubsidyRequest( data , callback) {
 
-        return StudentInfoModel.create(data ,callback)
+        return SubsidyRequestModel.create(data ,callback)
     }
 
-    static updateStudentInfo( data, callback){
-        return StudentInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
+    static updateSubsidyRequest( data, callback){
+        return SubsidyRequestModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
 
-    static getStudentInfo(id , callback){
-        return StudentInfoModel.findById(id , callback);
+    static getSubsidyRequest(id , callback){
+        return SubsidyRequestModel.findById(id , callback);
     }
 
-    static getStudentInfos(data , callback){
+    static getSubsidyRequests(data , callback){
         let options = {};
         options['sort'] = data.sort || { dateSent: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
@@ -69,7 +50,7 @@ class StudentInfoModel extends Model {
         if (data.filter && Object.keys(data.filter).length > 0) {
             var fArr = [];
             Object.keys(data.filter).forEach(function (value) {
-                if (StudentInfoSchema.paths[value]) {
+                if (SubsidyRequestSchema.paths[value]) {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
@@ -93,19 +74,18 @@ class StudentInfoModel extends Model {
             });
         }
         options.select = PublicFields;
-        return StudentInfoModel.paginate(filter, options, callback);
+        return SubsidyRequestModel.paginate(filter, options, callback);
     }
 
-    static deleteStudentInfo(id , callback){
-        return StudentInfoModel.findByIdAndRemove(id , callback);
+    static deleteSubsidyRequest(id , callback){
+        return SubsidyRequestModel.findByIdAndRemove(id , callback);
     }
 }
 
 
-mongoose.model(StudentInfoModel, StudentInfoSchema);
-module.exports = StudentInfoModel;
-module.exports.StudentInfoType = StudentInfoType;
-Constant.models['StudentInfo'] = {
-    name: StudentInfoModel.name,
-    collection: StudentInfoModel.collection.name
+mongoose.model(SubsidyRequestModel, SubsidyRequestSchema);
+module.exports = SubsidyRequestModel;
+Constant.models['SubsidyRequest'] = {
+    name: SubsidyRequestModel.name,
+    collection: SubsidyRequestModel.collection.name
 };

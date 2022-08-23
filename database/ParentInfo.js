@@ -2,21 +2,26 @@ var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 var UserModel = require('./User')
-var ContactType = {
-    address: 1,
-    gmail: 2, 
-    here: 0
-}
+var MaritialType = [
+    "Married",
+    "Divorced",
+    "Separated",
+    "Rather not say",
+    "Single",
+];  
 
 
 var ParentInfoSchema = new Schema({
     id:Number,
-    contactType: Number,
-    name: String,
-    valueForContact: String,
-    sessions: [SchoolSessionSchema],
-    techContactRef: [String],
-    studentContactRef:[String],
+    maritialType:Number,
+    address: {type:String, require:true},
+    familyName: {type:String, require:true},
+    fatherName: {type:String, require:true},
+    fatherPhoneNumber: {type:String, require:true},
+    fatherEmail: {type:String, require:true},
+    motherName: {type:String, require:true},
+    motherPhoneNumber: {type:String, require:true},
+    motherEmail: {type:String, require:true}, 
 });
 
 ParentInfoSchema.pre('save', function(next) {
@@ -97,7 +102,7 @@ class ParentInfoModel extends Model {
 
 mongoose.model(ParentInfoModel, ParentInfoSchema);
 module.exports = ParentInfoModel;
-module.exports.ParentInfoType = ParentInfoType;
+module.exports.MaritialType = MaritialType;
 Constant.models['ParentInfo'] = {
     name: ParentInfoModel.name,
     collection: ParentInfoModel.collection.name

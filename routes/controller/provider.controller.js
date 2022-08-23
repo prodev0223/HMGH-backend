@@ -15,7 +15,8 @@ class ProviderController extends BaseController {
             ContactNumberType:ProviderInfoModel.ContactNumberType,
             EmailType:ProviderInfoModel.EmailType,
             SkillSet: ProviderInfoModel.SkillSet,
-            
+            SreenTime: ProviderInfoModel.SreenTime,
+
         });
     }
 
