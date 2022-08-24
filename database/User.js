@@ -65,7 +65,7 @@ var UserSchema = new Schema({
     schoolInfo: { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' },
     providerInfo: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
     parentInfo: { type: Schema.Types.ObjectId, ref: 'ParentInfoModel' },
-    studentInfo: [ { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' }],
+    studentInfos: [ { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' }],
 });
 
 UserSchema.virtual('noNeedOldPwd').get(() => {
@@ -83,7 +83,7 @@ var UserRole = {
     Manager:100,
     School:60,
     Provider: 30,
-    Parent:3,
+    Client:3,
     Member: 2,
     Banned: 1
 }

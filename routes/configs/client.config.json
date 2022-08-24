@@ -11,6 +11,13 @@
             "path":"/get_default_value_for_client",
             "function":"getDefaultValueForClient",
             "authRequired":0
+        },
+        {
+            "path":"/upload_document",
+            "function":"uploadSingleImage",
+            "authRequired":0,
+            "method": 1,
+            "middleware":["uploadToTempFolder"]
         }
         
     ],

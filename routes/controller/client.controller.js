@@ -3,6 +3,8 @@ const Constant = require('../../constant')
 const fs = require('fs-extra')
 
 const StudentServiceModel = require('../../database/StudentService');
+const ParentInfoModel = require('../../database/ParentInfo');
+const ProviderInfoModel = require('../../database/ProviderInfo');
 
 class CustomController extends BaseController {
     static index(req, res) {
@@ -13,6 +15,8 @@ class CustomController extends BaseController {
         StudentServiceModel.find().then(listServices=>{
             BaseController.generateMessage(res, 0,{
                 listServices:listServices,
+                MaritialType: ParentInfoModel.MaritialType,
+                AcademicLevel: ProviderInfoModel.AcademicLevel,
                 
             });
         }).catch(err=>{

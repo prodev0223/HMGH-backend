@@ -19,6 +19,7 @@ const jwt = require('jsonwebtoken');
 
 const SchoolUserBridge = require('../bridge/school_user');
 const ProviderUserBridge = require('../bridge/provider_user');
+const ClientUserBridge = require('../bridge/client_user');
 
 class UserController extends BaseController {
     static index(req, res) {
@@ -96,12 +97,16 @@ class UserController extends BaseController {
             var providerInfo = await ProviderUserBridge.validAndCreateProviderInfo(body);
             
             if(!providerInfo){
-                return BaseController.generateMessage(res, 'Not enough data for create school info');
+                return BaseController.generateMessage(res, 'Not enough data for create provider info');
             }
             body.providerInfo = providerInfo;
-            return;
-        }else if(body.role == UserModel.UserRole.Parent){
-            
+        }else if(body.role == UserModel.UserRole.Client){
+            var clientInfo = ClientUserBridge.validAndCreateClientInfo(body);
+            if(!clientInfo){
+                return BaseController.generateMessage(res, 'Not enough data for create client info');
+            }
+            body.parentInfo = clientInfo.clientInfo;
+            body.studentInfos = clientInfo.studentInfos;
         }else{
             return  BaseController.generateMessage(res, "Not enough ");
         }
@@ -125,11 +130,14 @@ class UserController extends BaseController {
 
 
     static logout(req, res, next) {
-        delete req.session.token;
+        if(req.session &&!!req.session.token){
+            delete req.session.token;
+        }
+        
         BaseController.generateMessage(res, 0, new Date());
         LoginModel.updateOne({ token: req.token }, { $set: { isExpired: 1 } }, { new: true }, function (err, login) {
             if (!err) {
-                socketApi.logout(req.user, login ? login.fcmToken : ' ');
+                // socketApi.logout(req.user, login ? login.fcmToken : ' ');
             }
         })
         req.logout();

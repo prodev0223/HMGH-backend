@@ -4,28 +4,18 @@ var { Model, Schema } = mongoose;
 var UserModel = require('./User')
 
 
-
-var StudentInfoSchema = new Schema({
+var ProviderPrivateCalendarSchema = new Schema({
     id:Number,
-    firstName:{type:String, require:true}, 
-    lastName:{type:String, require:true}, 
-    birthday:{type:Date},
-    guardianPhone:{type:String, require:true}, 
-    guardianEmail:{type:String, require:true}, 
-    backgroundInfor:{type:String, require:true}, 
-    school:{type:String, require:true}, 
-    primaryTeacher:{type:String, require:true}, 
-    currentGrade:{type:String, require:true}, 
-    services: [ { type: Schema.Types.ObjectId, ref: 'StudentServiceModel' }],
-    hasIEP:{type:Number, default:1},
-    subsidyRequest:{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' },
-    availabilitySchedule:[{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
+    day: Date,
+    availableHours:[Number],
+
 });
 
-StudentInfoSchema.pre('save', function(next) {
+
+ProviderPrivateCalendarSchema.pre('save', function(next) {
   var doc = this;
   
-  StudentInfoModel.findOne({}).sort('-id').exec(function(err,  last){
+  ProviderPrivateCalendarModel.findOne({}).sort('-id').exec(function(err,  last){
       
         if(doc.id > 0){
             next();
@@ -42,21 +32,21 @@ StudentInfoSchema.pre('save', function(next) {
 
 var PublicFields = [];
 
-class StudentInfoModel extends Model {
-    static createStudentInfo( data , callback) {
+class ProviderPrivateCalendarModel extends Model {
+    static createProviderPrivateCalendar( data , callback) {
 
-        return StudentInfoModel.create(data ,callback)
+        return ProviderPrivateCalendarModel.create(data ,callback)
     }
 
-    static updateStudentInfo( data, callback){
-        return StudentInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
+    static updateProviderPrivateCalendar( data, callback){
+        return ProviderPrivateCalendarModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
 
-    static getStudentInfo(id , callback){
-        return StudentInfoModel.findById(id , callback);
+    static getProviderPrivateCalendar(id , callback){
+        return ProviderPrivateCalendarModel.findById(id , callback);
     }
 
-    static getStudentInfos(data , callback){
+    static getProviderPrivateCalendars(data , callback){
         let options = {};
         options['sort'] = data.sort || { dateSent: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
@@ -65,7 +55,7 @@ class StudentInfoModel extends Model {
         if (data.filter && Object.keys(data.filter).length > 0) {
             var fArr = [];
             Object.keys(data.filter).forEach(function (value) {
-                if (StudentInfoSchema.paths[value]) {
+                if (ProviderPrivateCalendarSchema.paths[value]) {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
@@ -89,18 +79,18 @@ class StudentInfoModel extends Model {
             });
         }
         options.select = PublicFields;
-        return StudentInfoModel.paginate(filter, options, callback);
+        return ProviderPrivateCalendarModel.paginate(filter, options, callback);
     }
 
-    static deleteStudentInfo(id , callback){
-        return StudentInfoModel.findByIdAndRemove(id , callback);
+    static deleteProviderPrivateCalendar(id , callback){
+        return ProviderPrivateCalendarModel.findByIdAndRemove(id , callback);
     }
 }
 
 
-mongoose.model(StudentInfoModel, StudentInfoSchema);
-module.exports = StudentInfoModel;
-Constant.models['StudentInfo'] = {
-    name: StudentInfoModel.name,
-    collection: StudentInfoModel.collection.name
+mongoose.model(ProviderPrivateCalendarModel, ProviderPrivateCalendarSchema);
+module.exports = ProviderPrivateCalendarModel;
+Constant.models['ProviderPrivateCalendar'] = {
+    name: ProviderPrivateCalendarModel.name,
+    collection: ProviderPrivateCalendarModel.collection.name
 };

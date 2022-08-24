@@ -4,7 +4,16 @@ var { Model, Schema } = mongoose;
 
 var SubsidyRequestSchema = new Schema({
     id:Number,
-    name: String,
+    skillSet:Number,
+    school: String,
+    requestContactRav: {type:Number , default:1},
+    ravPhone: String,
+    ravName: String,
+    ravEmail: String,
+    therapistContact: String,
+    therapistPhone:String,
+    note:String,
+    documents:[String],
 });
 
 SubsidyRequestSchema.pre('save', function(next) {
