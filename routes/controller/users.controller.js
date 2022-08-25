@@ -67,7 +67,13 @@ class UserController extends BaseController {
         })
     }
 
-    
+    static checkEmailRegistered(req,res){
+        UserModel.countDocuments(req.parsedData.searchData).then(result=>{
+            BaseController.generateMessage(res, 0 , result);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
 
     static async signup(req, res) {
         debug(req.body)

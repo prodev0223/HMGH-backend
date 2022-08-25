@@ -1,24 +1,16 @@
 var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
-var UserModel = require('./User')
 
-
-var SchoolSessionSchema = new Schema({
+var AppointmentSchema = new Schema({
     id:Number,
-    dayInWeek: Number,
-    openHour: Number,
-    openMin: Number,
-    closeHour: Number,
-    closeMin: Number,
-    location:{type:String , default:""},
+    name: String,
 });
 
-
-SchoolSessionSchema.pre('save', function(next) {
+AppointmentSchema.pre('save', function(next) {
   var doc = this;
   
-  SchoolSessionModel.findOne({}).sort('-id').exec(function(err,  last){
+  AppointmentModel.findOne({}).sort('-id').exec(function(err,  last){
       
         if(doc.id > 0){
             next();
@@ -35,21 +27,21 @@ SchoolSessionSchema.pre('save', function(next) {
 
 var PublicFields = [];
 
-class SchoolSessionModel extends Model {
-    static createSchoolSession( data , callback) {
+class AppointmentModel extends Model {
+    static createAppointment( data , callback) {
 
-        return SchoolSessionModel.create(data ,callback)
+        return AppointmentModel.create(data ,callback)
     }
 
-    static updateSchoolSession( data, callback){
-        return SchoolSessionModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
+    static updateAppointment( data, callback){
+        return AppointmentModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
 
-    static getSchoolSession(id , callback){
-        return SchoolSessionModel.findById(id , callback);
+    static getAppointment(id , callback){
+        return AppointmentModel.findById(id , callback);
     }
 
-    static getSchoolSessions(data , callback){
+    static getAppointments(data , callback){
         let options = {};
         options['sort'] = data.sort || { dateSent: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
@@ -58,7 +50,7 @@ class SchoolSessionModel extends Model {
         if (data.filter && Object.keys(data.filter).length > 0) {
             var fArr = [];
             Object.keys(data.filter).forEach(function (value) {
-                if (SchoolSessionSchema.paths[value]) {
+                if (AppointmentSchema.paths[value]) {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
@@ -82,18 +74,18 @@ class SchoolSessionModel extends Model {
             });
         }
         options.select = PublicFields;
-        return SchoolSessionModel.paginate(filter, options, callback);
+        return AppointmentModel.paginate(filter, options, callback);
     }
 
-    static deleteSchoolSession(id , callback){
-        return SchoolSessionModel.findByIdAndRemove(id , callback);
+    static deleteAppointment(id , callback){
+        return AppointmentModel.findByIdAndRemove(id , callback);
     }
 }
 
 
-mongoose.model(SchoolSessionModel, SchoolSessionSchema);
-module.exports = SchoolSessionModel;
-Constant.models['SchoolSession'] = {
-    name: SchoolSessionModel.name,
-    collection: SchoolSessionModel.collection.name
+mongoose.model(AppointmentModel, AppointmentSchema);
+module.exports = AppointmentModel;
+Constant.models['Appointment'] = {
+    name: AppointmentModel.name,
+    collection: AppointmentModel.collection.name
 };

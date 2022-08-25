@@ -11,6 +11,7 @@ var SubsidyRequestSchema = new Schema({
     ravName: String,
     ravEmail: String,
     therapistContact: String,
+    therapistEmail:String,
     therapistPhone:String,
     note:String,
     documents:[String],

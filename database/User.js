@@ -137,6 +137,10 @@ class UserModel extends mongoose.Model {
         }).asCallback(callback);
     }
 
+    static countWithData(data, callback){
+        return UserModel.count(data,callback);
+    }
+
     static async createUserWithGoole(info, callback) {
         if (!info || !info.googleId || !info.email || !info.lastName || !info.firstName) return Promise.reject(ErrorCode.MissingParams(info)).asCallback(callback);
         if (!info.email || !/^([\w-\.]+@([\w-]+\.)+[\w-]{2,})?$/.test(info.email)) {

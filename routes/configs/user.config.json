@@ -20,6 +20,12 @@
             "requireFields":["username","password", "email"]
         },
         {
+            "path":"/check_email_registered",
+            "function":"checkEmailRegistered",
+            "authRequired":0,
+            "requireFields":["searchData"]
+        },
+        {
             "path":"/get_user_avatar",
             "function":"getUserAvatar",
             "authRequired":0,

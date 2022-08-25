@@ -5,6 +5,7 @@ const fs = require('fs-extra')
 const StudentServiceModel = require('../../database/StudentService');
 const ParentInfoModel = require('../../database/ParentInfo');
 const ProviderInfoModel = require('../../database/ProviderInfo');
+const UserModel = require('../../database/User');
 
 class CustomController extends BaseController {
     static index(req, res) {
@@ -23,6 +24,10 @@ class CustomController extends BaseController {
             BaseController.generateMessage(res, err);
         })
         
+    }
+
+    static getChildProfile(req,res){
+        // UserModel.
     }
 
     

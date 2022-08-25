@@ -18,6 +18,11 @@
             "authRequired":0,
             "method": 1,
             "middleware":["uploadToTempFolder"]
+        },
+        {
+            "path":"/get_child_profile",
+            "function":"getChildProfile",
+            "method": 1
         }
         
     ],
