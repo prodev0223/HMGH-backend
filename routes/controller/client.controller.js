@@ -19,7 +19,7 @@ class CustomController extends BaseController {
                 listServices:listServices,
                 MaritialType: ParentInfoModel.MaritialType,
                 AcademicLevel: ProviderInfoModel.AcademicLevel,
-                
+                SkillSet: ProviderInfoModel.SkillSet
             });
         }).catch(err=>{
             BaseController.generateMessage(res, err);
