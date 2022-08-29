@@ -6,6 +6,7 @@ const StudentServiceModel = require('../../database/StudentService');
 const ParentInfoModel = require('../../database/ParentInfo');
 const ProviderInfoModel = require('../../database/ProviderInfo');
 const UserModel = require('../../database/User');
+const StudentInfoModel = require('../../database/StudentInfo');
 
 class CustomController extends BaseController {
     static index(req, res) {
@@ -27,7 +28,15 @@ class CustomController extends BaseController {
     }
 
     static getChildProfile(req,res){
-        // UserModel.
+        UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"studentInfos" ).then(ids=>{
+            StudentInfoModel.getStudentInfoByIds(ids).then(students=>{
+                BaseController.generateMessage(res, !students,students);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
     }
 
     

@@ -48,6 +48,10 @@ class StudentInfoModel extends Model {
         return StudentInfoModel.create(data ,callback)
     }
 
+    static getStudentInfoByIds(ids, callback){
+        return StudentInfoModel.find({_id:{$in: ids}} , callback);
+    }
+
     static updateStudentInfo( data, callback){
         return StudentInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
