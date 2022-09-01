@@ -9,8 +9,8 @@ const { mailConfig } = Constant;
 const nodeMailer = require('nodemailer')
 const Promise = require('bluebird')
 let transporter = nodeMailer.createTransport({
-  // host: mailConfig.admin_email_domain,
-  service: "Gmail",
+  host: mailConfig.admin_email_domain,
+  // service: "Gmail",
   port: 465,
   secure: true,
   auth: {

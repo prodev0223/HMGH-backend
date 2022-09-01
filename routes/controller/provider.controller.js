@@ -16,7 +16,9 @@ class ProviderController extends BaseController {
             EmailType:ProviderInfoModel.EmailType,
             SkillSet: ProviderInfoModel.SkillSet,
             SreenTime: ProviderInfoModel.SreenTime,
-
+            AcademicLevel: ProviderInfoModel.AcademicLevel,
+            SreenTime: ProviderInfoModel.SreenTime,
+            ScreenWindow: ProviderController.ScreenWindow,
         });
     }
 
