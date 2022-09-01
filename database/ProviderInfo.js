@@ -52,7 +52,7 @@ var AcademicLevel =[
 
 var SreenTime = ['AM','PM'];
 
-var ScreenWindow= ['12 hrs','24 hrs'];
+var CancellationWindow= ['12 hrs','24 hrs'];
 
 var AcademicLevelSchema = new Schema({
     level: Number,
@@ -192,7 +192,7 @@ module.exports.EmailType = EmailType;
 module.exports.SkillSet = SkillSet;
 module.exports.AcademicLevel= AcademicLevel;
 module.exports.SreenTime = SreenTime;
-module.exports.ScreenWindow = ScreenWindow;
+module.exports.CancellationWindow = CancellationWindow;
 Constant.models['ProviderInfo'] = {
     name: ProviderInfoModel.name,
     collection: ProviderInfoModel.collection.name

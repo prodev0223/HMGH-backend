@@ -18,7 +18,7 @@ class ProviderController extends BaseController {
             SreenTime: ProviderInfoModel.SreenTime,
             AcademicLevel: ProviderInfoModel.AcademicLevel,
             SreenTime: ProviderInfoModel.SreenTime,
-            ScreenWindow: ProviderController.ScreenWindow,
+            CancellationWindow: ProviderInfoModel.CancellationWindow,
         });
     }
 
