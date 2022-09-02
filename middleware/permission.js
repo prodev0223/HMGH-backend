@@ -40,18 +40,18 @@ function checkPermission(req, res , next){
         if(req.controllerConfig.authRequired!=0){
             if (req.isAuthenticated()) {
                 console.log('da authen')
-                if(typeof req.controllerConfig.requireRole != 'undefined'){ // this is an array for accepted role
-                    if(req.controllerConfig.requireRole != req.user.user.role){
-                        throw new Error('no permission');
-                    }
-                }
+                // if(typeof req.controllerConfig.requireRole != 'undefined'){ // this is an array for accepted role
+                //     if(req.controllerConfig.requireRole != req.user.user.role){
+                //         throw new Error('no permission');
+                //     }
+                // }
 
-                if(typeof req.controllerConfig.minimumRoleAccepted != 'undefined'){ // minimum role for continue
-                    if(req.controllerConfig.minimumRoleAccepted > req.user.user.role){
-                        throw new Error('no permission');
-                    }
+                // if(typeof req.controllerConfig.minimumRoleAccepted != 'undefined'){ // minimum role for continue
+                //     if(req.controllerConfig.minimumRoleAccepted > req.user.user.role){
+                //         throw new Error('no permission');
+                //     }
                     
-                }
+                // }
             }else{
                 console.log('chua authen ' );
             }

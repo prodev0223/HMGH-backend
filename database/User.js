@@ -365,6 +365,7 @@ class UserModel extends mongoose.Model {
             user.oldPassword.push({ password: user.password })
             user.password = Utility.createPassword(newPwd);
             user.pwdForgot = null;
+            user.save()
             return user;
         })
         

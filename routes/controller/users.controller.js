@@ -46,7 +46,8 @@ class UserController extends BaseController {
             if (error) return BaseController.generateMessage(res, error);
             if (user == null) return BaseController.generateMessage(res, ErrorCode.UserNotFound);
             if (user.role == UserModel.getUserRole().Banned) return BaseController.generateMessage(res, ErrorCode.UserBanned);
-            if (user.password != Utility.createPassword(password)) return BaseController.generateMessage(res, ErrorCode.PasswordIncorrect);
+            var passwordHexed = Utility.createPassword(password)
+            if (user.password != passwordHexed) return BaseController.generateMessage(res, ErrorCode.PasswordIncorrect);
             UserController.createNewSession(req, res, user._id, { accessToken: body.accessToken, fcmToken: body.fcmToken, device: body.device })
         })
     }
