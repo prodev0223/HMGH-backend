@@ -373,6 +373,21 @@ class UserModel extends mongoose.Model {
         
     }
 
+    static activeUser(_id, callback) {
+        // return LoginModel.find({token:token}).populate('user').then(login=>{
+        //     if(login==null) throw new Error('invalid token');
+        
+        return UserModel.findById(_id).then(user=>{
+            if(user.role == UserRole.Banned) return null
+            user.isActive = 1;
+            user.save()
+            return 1;
+        })
+        
+        // })
+        
+    }
+
     static checkTokenChangePwd(token, callback) {
         return new Promise((resolve, reject) => {
             var payload = jwt.verify(token, Constant.SecrectKey);

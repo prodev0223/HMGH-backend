@@ -80,6 +80,12 @@
             "requireFields":["token", "password"]
         },
         {
+            "path":"/active_user",
+            "function":"activeUserViaUrl",
+            "method": 1,
+            "requireFields":["token"]
+        },
+        {
             "path":"/logout",
             "function":"logout",
             "note":"need delete cookie on client site"

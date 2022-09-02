@@ -16,6 +16,7 @@ let Constant = {
   uploadFolderName: envConfig.uploadsFolderName,
   uploadFolder: rootFolder + '/public/' + envConfig.uploadsFolderName,
   baseUrl: envConfig.domain + ':' + envConfig.port + '/',
+  frontendUrl:'http://localhost:3000',
 
   //  MAILSERVER
   mailConfig: mailConfig,

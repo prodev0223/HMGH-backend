@@ -46,6 +46,9 @@ class UserController extends BaseController {
             if (error) return BaseController.generateMessage(res, error);
             if (user == null) return BaseController.generateMessage(res, ErrorCode.UserNotFound);
             if (user.role == UserModel.getUserRole().Banned) return BaseController.generateMessage(res, ErrorCode.UserBanned);
+            if (user.isActive != 1){
+                return BaseController.generateMessage(res, 'Current user is not active');
+            }
             var passwordHexed = Utility.createPassword(password)
             if (user.password != passwordHexed) return BaseController.generateMessage(res, ErrorCode.PasswordIncorrect);
             UserController.createNewSession(req, res, user._id, { accessToken: body.accessToken, fcmToken: body.fcmToken, device: body.device })
@@ -122,7 +125,7 @@ class UserController extends BaseController {
         return UserModel.createUserWithEmail(body, function (error, user) {
             if (error) return BaseController.generateMessage(res, error);
             req.user = user;
-            UserController.createNewSession(req, res, user._id, { accessToken: body.accessToken, fcmToken: body.fcmToken, device: body.device });
+            UserController.createNewSession(req, res, user._id, { accessToken: body.accessToken, fcmToken: body.fcmToken, device: body.device } ,false, true , body.email);
         })
     }
 
@@ -154,7 +157,7 @@ class UserController extends BaseController {
         BaseController.generateMessage(res, 0 , req.user.user);
     }
 
-    static createNewSession(req, res, userId, info , isCreateNew = false) {
+    static createNewSession(req, res, userId, info , isCreateNew = false , isNeedSendMail=false, userEmail = '') {
         LoginModel.initSessionFromEmail(userId, info, function (error, data) {
             if (data.fcmToken) {
                 req.fcmToken = data.fcmToken;
@@ -166,11 +169,25 @@ class UserController extends BaseController {
             if(isCreateNew){
                 data.isCreateNew = isCreateNew;
             }
-
-            req.login(data, function (err) {
-                if (err) { };
+            let hexedCode = Buffer.from(data.token).toString('base64')
+            // send mail
+            if(isNeedSendMail){
+                let mailOptions = {
+                    to: userEmail,
+                    frontend_url: Constant.frontendUrl +'/login/v' + hexedCode
+                };
+                mailController
+                    .sendEmailActive(mailOptions)
                 BaseController.generateMessage(res, error, data)
-            })
+            }else{
+                req.login(data, function (err) {
+                    if (err) { };
+                    BaseController.generateMessage(res, error, data)
+                })
+            }
+            
+
+            
         })
     }
 
@@ -491,6 +508,14 @@ class UserController extends BaseController {
             BaseController.generateMessage(res, 0, data);
         }).catch(err=>{
             BaseController.generateMessage(res, err);
+        })
+    }
+
+    static activeUserViaUrl(req,res){
+        UserModel.activeUser(req.user.user._id ).then(user=>{
+            BaseController.generateMessage(res, !user, user);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
         })
     }
     
