@@ -195,6 +195,10 @@ class UserController extends BaseController {
         return { success: 0, data: { code: '000', message: 'Request invalid.' } }
     }
 
+    static checkLoginAfterPassedJwt(req,res){
+        BaseController.generateMessage(res, 0, req.user);
+    }
+
     static checkLogin(req, res, next) {
         const token = req.headers['authorization'] || req.cookies.token || req.body.token || req.query.token // || req.headers['authorization'] || req.session.token || req.cookies.token;
         debug('token checklogin ' + token);

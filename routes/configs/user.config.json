@@ -14,6 +14,10 @@
             "requireFields":["username","password"]
         },
         {
+            "path":"/check_login",
+            "function":"checkLoginAfterPassedJwt"
+        },
+        {
             "path":"/signup",
             "function":"signup",
             "authRequired":0,
