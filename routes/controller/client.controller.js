@@ -7,6 +7,8 @@ const ParentInfoModel = require('../../database/ParentInfo');
 const ProviderInfoModel = require('../../database/ProviderInfo');
 const UserModel = require('../../database/User');
 const StudentInfoModel = require('../../database/StudentInfo');
+const AppointmentModel = require('../../database/Appointment');
+
 
 class CustomController extends BaseController {
     static index(req, res) {
@@ -39,6 +41,39 @@ class CustomController extends BaseController {
         })
     }
 
+    static searchProviders(req,res){
+        ProviderInfoModel.getProviderInfos(req.parsedData).then(data=>{
+            BaseController.generateMessage(res, !data,data);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+
+    static createAppoinment(req,res){
+        AppointmentModel.createAppointment(req.parsedData).then(data=>{
+            BaseController.generateMessage(res, !data,data);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+    static getMyAppointments(req,res){
+        var searchData = req.parsedData;
+        if(typeof searchData.filter == undefined){
+            searchData.filter = {}
+        }
+        if(typeof searchData.filter.requester == undefined){
+            searchData.filter.requester= req.user.user._id;
+        }
+        AppointmentModel.getAppointments(searchData).then(data=>{
+            BaseController.generateMessage(res, !data,data);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+    
     
 }
 module.exports = CustomController;

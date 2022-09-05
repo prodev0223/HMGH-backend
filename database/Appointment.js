@@ -2,9 +2,24 @@ var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 
+var AppoinmentStatus = {
+    PENDING: 0,
+    ACCEPTTED:1,
+    DECLINE:-1,
+    CANCELLED:2,
+}
+
 var AppointmentSchema = new Schema({
     id:Number,
-    name: String,
+    requester:  { type: Schema.Types.ObjectId, ref: 'UserModel' },
+    skillSet: [Number],
+    dependent: { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' },
+    provider:  { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
+    date: {type:Date},
+    status: Number,
+    reason: String,
+    note:String,
+    location:String,
 });
 
 AppointmentSchema.pre('save', function(next) {

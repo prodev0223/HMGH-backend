@@ -107,6 +107,8 @@ var ProviderInfoSchema = new Schema({
     reduceWithAcademic: [{type: Schema.Types.ObjectId, ref: 'ProviderReduceRateModel'}],
     isWillingOpenPrivate: {type:Number, default:0},
     privateCalendars:[{type: Schema.Types.ObjectId, ref: 'ProviderReduceRateModel'}],
+    logo:{type:String , default:""},
+    
 });
 
 ProviderInfoSchema.pre('save', function(next) {
@@ -170,7 +172,7 @@ class ProviderInfoModel extends Model {
         if (data.search && typeof (data.search) == 'string' && data.search.length) {
             if (!filter['$and']) filter['$and'] = [];
             filter.$and.push({
-                $or: [{ 'title': { '$regex': data.search, '$options': 'i' } },
+                $or: [{ 'name': { '$regex': data.search, '$options': 'i' } },
                 { 'text': { '$regex': data.search, '$options': 'i' } }
             ]
             });

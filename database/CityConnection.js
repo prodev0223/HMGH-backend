@@ -68,7 +68,7 @@ class CityConnectionModel extends Model {
         if (data.search && typeof (data.search) == 'string' && data.search.length) {
             if (!filter['$and']) filter['$and'] = [];
             filter.$and.push({
-                $or: [{ 'title': { '$regex': data.search, '$options': 'i' } },
+                $or: [{ 'name': { '$regex': data.search, '$options': 'i' } },
                 { 'text': { '$regex': data.search, '$options': 'i' } }
             ]
             });

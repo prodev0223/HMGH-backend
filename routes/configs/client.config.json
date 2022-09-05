@@ -23,6 +23,16 @@
             "path":"/get_child_profile",
             "function":"getChildProfile",
             "method": 1
+        },
+        {
+            "path":"/search_providers",
+            "function":"searchProviders",
+            "method": 1
+        },
+        {
+            "path":"/create_appoinment",
+            "function":"createAppoinment",
+            "method": 1
         }
         
     ],

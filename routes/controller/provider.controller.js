@@ -4,6 +4,9 @@ const fs = require('fs-extra')
 
 const ProviderInfoModel = require('../../database/ProviderInfo')
 const CityConnectionModel = require('../../database/CityConnection')
+const UserModel = require('../../database/User')
+const AppointmentModel = require('../../database/Appointment')
+
 
 class ProviderController extends BaseController {
     static index(req, res) {
@@ -27,6 +30,37 @@ class ProviderController extends BaseController {
             BaseController.generateMessage(res, 0,result)
         }).catch(err=>{
             BaseController.generateMessage(res, err)
+        })
+    }
+
+    static getMyProviderProfile(req,res){
+        UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"providerInfo" ).then(id=>{
+            ProviderInfoModel.getProviderInfo(id).then(provider=>{
+                BaseController.generateMessage(res, !provider,provider);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+    static updateMyProviderProfile(req,res){
+        BaseController.generateMessage(res, 0,200);
+    }
+
+    static getListAppoinmentRequestedMe(req,res){
+        var searchData = req.parsedData;
+        if(typeof searchData.filter == undefined){
+            searchData.filter = {}
+        }
+        if(typeof searchData.filter.provider == undefined){
+            searchData.filter.provider= req.user.user._id;
+        }
+        AppointmentModel.getAppointments(searchData).then(data=>{
+            BaseController.generateMessage(res, !data,data);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
         })
     }
 }

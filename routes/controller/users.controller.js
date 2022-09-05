@@ -522,6 +522,43 @@ class UserController extends BaseController {
             BaseController.generateMessage(res, err)
         })
     }
+
+    static resendActiveUserUrl(req,res){
+        var email = req.parsedData.email;
+        UserModel.getUser({email:email}).then(user=>{
+            LoginModel.initSessionFromEmail(user._id, {}, function (error, data) {
+                if (data.fcmToken) {
+                    req.fcmToken = data.fcmToken;
+                }
+                if (req.session) {
+                    req.session.token = data.token;
+                }
+    
+                if(isCreateNew){
+                    data.isCreateNew = isCreateNew;
+                }
+                let hexedCode = Buffer.from(data.token).toString('base64')
+                // send mail
+                if(isNeedSendMail){
+                    let mailOptions = {
+                        to: userEmail,
+                        frontend_url: Constant.frontendUrl +'/login/v' + hexedCode
+                    };
+                    mailController
+                        .sendEmailActive(mailOptions)
+                    BaseController.generateMessage(res, error, data)
+                }else{
+                    req.login(data, function (err) {
+                        if (err) { };
+                        BaseController.generateMessage(res, error, data)
+                    })
+                }
+                
+    
+                
+            })
+        })
+    }
     
     static testSendMail(){
 
