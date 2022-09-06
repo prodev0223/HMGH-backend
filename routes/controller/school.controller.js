@@ -4,6 +4,7 @@ const fs = require('fs-extra')
 
 const SchoolCommunityModel = require('../../database/SchoolCommunity')
 const SchoolInfoModel = require('../../database/SchoolInfo')
+const UserModel = require('../../database/User')
 
 class SchoolController extends BaseController {
     static index(req, res) {
@@ -47,6 +48,19 @@ class SchoolController extends BaseController {
             BaseController.generateMessage(res, 0,result)
         }).catch(err=>{
             BaseController.generateMessage(res, err)
+        })
+    }
+
+    static async getMySchoolInfo(req, res){
+        
+        UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"schoolInfo" ).then(id=>{
+            SchoolInfoModel.getSchoolInfo(id).then(provider=>{
+                BaseController.generateMessage(res, !provider,provider);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
         })
     }
 

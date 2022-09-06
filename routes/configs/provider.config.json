@@ -23,6 +23,11 @@
             "authRequired":0,
             "method": 1,
             "middleware":["uploadToTempFolder"]
+        },
+        {
+            "path":"/get_my_provider_info",
+            "function":"getMyProviderInfo",
+            "method": 1
         }
     ],
     "middleware":[

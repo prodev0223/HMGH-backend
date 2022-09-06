@@ -38,9 +38,9 @@
             "middleware":[]
         },
         {
-            "path":"/get_school_info",
-            "function":"getSchoolInfo",
-            "authRequired":0
+            "path":"/get_my_school_info",
+            "function":"getMySchoolInfo",
+            "method":1
         }
     ],
     "middleware":[

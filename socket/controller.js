@@ -13,7 +13,7 @@ const ApiList = require('./socketapi')
 
 var parseCookie = require('./parsecookie');
 
-// var socketResult = 'socket_result';
+var socketResult = 'socket_result';
 var __ = require('i18n').__;
 
 var UserRoles = UserModel.getUserRole();
@@ -108,9 +108,9 @@ class ChatController {
       debug('init socket error ' + JSON.stringify(e));
     }).bind(this);
 
-    this.on('init-finish', () => {
-      // schedule to notify
-    })
+    // this.on('init-finish', () => {
+    //   // schedule to notify
+    // })
   }
 
 
@@ -191,9 +191,31 @@ class ChatController {
       if (nsp) nsp.emit(socketResult, { key: key, success: !error, data: data || error });
     };
   }
+
   
-  emitToRoom(room , event , data){
-    this.io.to(room ).emit()
+  
+  ioEmitTo(room, key, error, info, nsp) {
+    // debug('key ' + key + ' success ' + JSON.stringify(error) + ' info ' + JSON.stringify(info));
+    if (nsp) {
+      return nsp.to(room.toString()).emit(socketResult, { key: key, success: !error, data: error || info });
+    }
+    this.io.to(room.toString()).emit(socketResult, { key: key, success: !error, data: error || info });
+  }
+
+  emitFromHttp(room, key, error, info){
+    this.nspApi.to(room.toString()).emit(socketResult, { key: key, success: !error, data: error || info });
+  }
+
+  getKeyEvent(key, status) {
+    if (typeof status === 'undefined') {
+      return key;
+    }
+    key = 'user_' + key;
+    if (status === 1) {
+      return key + '_success';
+    } else {
+      return key + '_failed';
+    }
   }
   
 }

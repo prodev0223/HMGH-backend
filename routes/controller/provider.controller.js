@@ -33,7 +33,7 @@ class ProviderController extends BaseController {
         })
     }
 
-    static getMyProviderProfile(req,res){
+    static getMyProviderInfo(req,res){
         UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"providerInfo" ).then(id=>{
             ProviderInfoModel.getProviderInfo(id).then(provider=>{
                 BaseController.generateMessage(res, !provider,provider);
