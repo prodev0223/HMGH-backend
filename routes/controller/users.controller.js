@@ -111,14 +111,14 @@ class UserController extends BaseController {
             }
             body.providerInfo = providerInfo;
         }else if(body.role == UserModel.UserRole.Client){
-            var clientInfo = ClientUserBridge.validAndCreateClientInfo(body);
-            if(!clientInfo){
+            var clientInfo = await ClientUserBridge.validAndCreateClientInfo(body);
+            if(!clientInfo || !clientInfo.parentInfo || !clientInfo.studentInfos || clientInfo.studentInfos.length == 0){
                 return BaseController.generateMessage(res, 'Not enough data for create client info');
             }
-            body.parentInfo = clientInfo.clientInfo;
+            body.parentInfo = clientInfo.parentInfo;
             body.studentInfos = clientInfo.studentInfos;
         }else{
-            return  BaseController.generateMessage(res, "Not enough ");
+            return  BaseController.generateMessage(res, "Not enough data for create parent info");
         }
 
         // init account

@@ -25,6 +25,11 @@
             "method": 1
         },
         {
+            "path":"/get_parent_profile",
+            "function":"getParentProfile",
+            "method": 1
+        },
+        {
             "path":"/search_providers",
             "function":"searchProviders",
             "method": 1

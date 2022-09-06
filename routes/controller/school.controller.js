@@ -49,5 +49,17 @@ class SchoolController extends BaseController {
             BaseController.generateMessage(res, err)
         })
     }
+
+    static getMyProviderProfile(req,res){
+        UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"studentInfos" ).then(id=>{
+            SchoolInfoModel.getSchoolInfo(id).then(provider=>{
+                BaseController.generateMessage(res, !provider,provider);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
 }
 module.exports = SchoolController;

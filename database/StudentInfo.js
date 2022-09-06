@@ -52,6 +52,14 @@ class StudentInfoModel extends Model {
         return StudentInfoModel.find({_id:{$in: ids}} , callback);
     }
 
+    static removeAvailabilitySchedule(studentId,availabilityScheduleItem  ){
+        return StudentInfoModel.findById(id).then(student=>{
+            student.availabilitySchedule.splice(availabilityScheduleItem);
+            student.save();
+            return student;
+        })
+    }
+
     static updateStudentInfo( data, callback){
         return StudentInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }

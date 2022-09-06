@@ -1,0 +1,16 @@
+{
+    "name":"api",
+    "path":"api.controller.js",
+    "controllers":[
+        {
+            "path":"/",
+            "function":"index",
+            "authRequired":0
+        }
+        
+    ],
+    "middleware":[
+        "permission", 
+        "checkdata"
+    ]
+}

@@ -9,6 +9,7 @@ var fs = require('fs-extra');
 var moment = require('moment')
 fs = Promise.promisifyAll(fs);
 var debug = require('debug')(Constant.debug_name + ':socket');
+const ApiList = require('./socketapi')
 
 var parseCookie = require('./parsecookie');
 
@@ -122,14 +123,21 @@ class ChatController {
     }
     var that = this;
     this.nspApi.on('connection',  function(socket){
-        require('./namespaces/book') (socket);
+      socket.on(ApiList.get_user_by_id, function (info) {
+        UserModel.getUserInfo(info._id, that.response(this, ApiList.get_user_by_id));
+      });
+
+
+
     });
     
   }
 
 
   addEventHandler() {
+    debug('socket connection');
 
+    
   }
 
   
@@ -164,6 +172,25 @@ class ChatController {
     }).asCallback(callback);
   }
   
+  response(socket, key) {
+    let self = this;
+    return function (error, info) {
+      self._emitData(socket, self.getKeyEvent(key), !error, error || info);
+    };
+  }
+  responseTo(key, room, nsp) {
+    let self = this;
+    return function (error, info) {
+      self.ioEmitTo(room, self.getKeyEvent(key), error, info, nsp);
+    };
+  }
+
+  responseOnChannel(key, nsp) {
+    key = this.getKeyEvent(key);
+    return function (error, data) {
+      if (nsp) nsp.emit(socketResult, { key: key, success: !error, data: data || error });
+    };
+  }
   
   emitToRoom(room , event , data){
     this.io.to(room ).emit()
@@ -171,10 +198,6 @@ class ChatController {
   
 }
 
-
-var EventEmitter = require('events').EventEmitter;
-var util = require('util');
-util.inherits(ChatController, EventEmitter);
 
 const instance = new ChatController();
 Object.freeze(instance);

@@ -46,7 +46,7 @@ async function validAndCreateStudentInfos(clientInfos){
         }
         if(!!info.subsidyRequest){
             var newSubsidyRequest = await validAndCreateSubsidy(info.subsidyRequest);
-            if(newSubsidyRequest){
+            if(!newSubsidyRequest){
                 return undefined;
             }
             info.subsidyRequest = newSubsidyRequest;
@@ -65,6 +65,28 @@ async function validAndCreateStudentInfos(clientInfos){
         return listClients;
     }
     return undefined;
+}
+
+async function validAndCreate1StudentInfo(info){
+    
+    if(!info.availabilitySchedule||info.availabilitySchedule.length == 0){
+        return undefined;
+    }
+    if(!!info.subsidyRequest){
+        var newSubsidyRequest = await validAndCreateSubsidy(info.subsidyRequest);
+        if(!newSubsidyRequest){
+            return undefined;
+        }
+        info.subsidyRequest = newSubsidyRequest;
+    }
+    var newAvailabilitySchedule = await validAndCreateSchoolSessions(info.availabilitySchedule);
+    if(!newAvailabilitySchedule || newAvailabilitySchedule.length == 0){
+        return undefined;
+    }
+
+    info.availabilitySchedule = newAvailabilitySchedule;
+    return StudentInfoModel.createStudentInfo(info).then(student=>{return student._id}).catch(err=>{return undefined;})
+    
 }
 
 async function  validAndCreateClientInfo(info){
@@ -87,5 +109,5 @@ async function  validAndCreateClientInfo(info){
     return {parentInfo: pairedParentInfo ,studentInfos: pairedStudentInfo}
 
 }
-
+module.exports.validAndCreate1StudentInfo = validAndCreate1StudentInfo;
 module.exports.validAndCreateClientInfo = validAndCreateClientInfo;
