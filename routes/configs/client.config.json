@@ -25,6 +25,11 @@
             "method": 1
         },
         {
+            "path":"/update_child_profile",
+            "function":"updateChildProfile",
+            "method": 1
+        },
+        {
             "path":"/get_parent_profile",
             "function":"getParentProfile",
             "method": 1
@@ -38,7 +43,13 @@
             "path":"/create_appoinment",
             "function":"createAppoinment",
             "method": 1
+        },
+        {
+            "path":"/get_my_appointments",
+            "function":"getMyAppointments",
+            "method": 1
         }
+
         
     ],
     "middleware":[

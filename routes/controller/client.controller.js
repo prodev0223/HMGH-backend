@@ -11,6 +11,7 @@ const AppointmentModel = require('../../database/Appointment');
 const { validAndCreate1StudentInfo } = require('../bridge/client_user');
 const SchoolSessionModel = require('../../database/SchoolSession');
 
+const socketController = require('../../socket/controller');
 
 class CustomController extends BaseController {
     static index(req, res) {
@@ -120,8 +121,11 @@ class CustomController extends BaseController {
 
 
     static createAppoinment(req,res){
+        var postData = req.parsedData;
+        postData.requester = req.user.user._id;
         AppointmentModel.createAppointment(req.parsedData).then(data=>{
             BaseController.generateMessage(res, !data,data);
+            socketController.emitFromHttp( postData.provider , 'new_appoint_from_client', 0 , data  );
         }).catch(err=>{
             BaseController.generateMessage(res, err);
         })

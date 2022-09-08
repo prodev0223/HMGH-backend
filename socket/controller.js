@@ -31,6 +31,11 @@ class ChatController {
     this.fcmTokens = {};
     this.socketsOfUser = {};
     this.io = require('socket.io')();
+    // this.io = require('socket.io')({
+    //   cors: {
+    //     origin: "http://localhost:3000"
+    //   }
+    // });
     this.nspApi = this.io.of('api');
     // this.nspAdmin = this.io.of('admin');
     // this.nspFrontend = this.io.of('frontend');
@@ -57,7 +62,7 @@ class ChatController {
       debug('init namespace root');
       this.nspApi.use(async function (socket, next) {
         let token = socket.handshake.query.token || parseCookie.get('ddp_token', socket.request.headers.cookie) ||socket.handshake.headers.token ;
-        debug('get token', token);
+        console.log('get token', token);
         if (!token) return respUnauthenticate('Token required', next);
         try {
           let user = await self.checkLogin(socket, token);
@@ -122,12 +127,18 @@ class ChatController {
       return;
     }
     var that = this;
+    this.io.on('connection',  function(socket){
+      console.log('socket connection');
+    });
     this.nspApi.on('connection',  function(socket){
+      console.log('socket connection at api namespaces');
       socket.on(ApiList.get_user_by_id, function (info) {
         UserModel.getUserInfo(info._id, that.response(this, ApiList.get_user_by_id));
       });
 
-
+      socket.on(ApiList.join_room, function (roomId) {
+        socket.join(roomId);
+      });
 
     });
     

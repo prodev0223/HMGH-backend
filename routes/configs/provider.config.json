@@ -28,6 +28,12 @@
             "path":"/get_my_provider_info",
             "function":"getMyProviderInfo",
             "method": 1
+        },
+        {
+            "path":"/update_my_provider_profile",
+            "function":"updateMyProviderProfile",
+            
+            "method": 1
         }
     ],
     "middleware":[

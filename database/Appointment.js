@@ -16,7 +16,7 @@ var AppointmentSchema = new Schema({
     dependent: { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' },
     provider:  { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
     date: {type:Date},
-    status: Number,
+    status: {type:Number , default: AppoinmentStatus.PENDING},
     reason: String,
     note:String,
     location:String,
@@ -100,6 +100,7 @@ class AppointmentModel extends Model {
 
 mongoose.model(AppointmentModel, AppointmentSchema);
 module.exports = AppointmentModel;
+module.exports.AppoinmentStatus = AppoinmentStatus;
 Constant.models['Appointment'] = {
     name: AppointmentModel.name,
     collection: AppointmentModel.collection.name

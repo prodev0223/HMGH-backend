@@ -51,7 +51,7 @@
     "requestify": "^0.2.5",
     "serve-favicon": "~2.4.2",
     "simple-thumbnail": "^1.6.5",
-    "socket.io": "^2.3.0",
+    "socket.io": "2.5.0",
     "tunnel": "0.0.6",
     "twitter-api-client": "^1.3.7",
     "validate-fields": "^5.1.1",
