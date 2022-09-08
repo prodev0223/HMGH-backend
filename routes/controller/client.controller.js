@@ -133,12 +133,13 @@ class CustomController extends BaseController {
 
     static getMyAppointments(req,res){
         var searchData = req.parsedData;
-        if(typeof searchData.filter == undefined){
+        if( searchData.filter == undefined){
             searchData.filter = {}
         }
-        if(typeof searchData.filter.requester == undefined){
+        if(searchData.filter.requester == undefined){
             searchData.filter.requester= req.user.user._id;
         }
+        searchData.sort = {date:1};
         AppointmentModel.getAppointments(searchData).then(data=>{
             BaseController.generateMessage(res, !data,data);
         }).catch(err=>{

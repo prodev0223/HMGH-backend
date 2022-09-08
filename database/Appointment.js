@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
+const UserModel = require('./User')
 
 var AppoinmentStatus = {
     PENDING: 0,
@@ -69,7 +70,7 @@ class AppointmentModel extends Model {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
-                    } else if (typeof data.filter[value] == "number") {
+                    } else if (typeof data.filter[value] == "number" || typeof data.filter[value] == "object") {
                         f[value] = data.filter[value];
                     } else {
                         f[value] = new RegExp(data.filter[value], 'ig');
@@ -83,13 +84,15 @@ class AppointmentModel extends Model {
         if (data.search && typeof (data.search) == 'string' && data.search.length) {
             if (!filter['$and']) filter['$and'] = [];
             filter.$and.push({
-                $or: [{ 'title': { '$regex': data.search, '$options': 'i' } },
-                { 'text': { '$regex': data.search, '$options': 'i' } }
+                $or: [{ 'location': { '$regex': data.search, '$options': 'i' } },
+                { 'note': { '$regex': data.search, '$options': 'i' } }
             ]
             });
         }
         options.select = PublicFields;
-        return AppointmentModel.paginate(filter, options, callback);
+        options.populate = [{path:'requester', select: UserModel .PublicFields} , {path: 'dependent' } , {path:'provider'}]
+        options.sort = data.sort ||{date:-1};
+        return AppointmentModel.paginate(filter, options, callback);//.populated();
     }
 
     static deleteAppointment(id , callback){
