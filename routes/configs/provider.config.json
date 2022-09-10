@@ -34,6 +34,40 @@
             "function":"updateMyProviderProfile",
             
             "method": 1
+        },
+        {
+            "path":"/create_appoinment",
+            "function":"createAppoinment",
+            "method": 1
+        },
+        {
+            "path":"/get_my_appointments",
+            "function":"getListAppoinmentRequestedMe",
+            "method": 1
+        },
+        {
+            "path":"/get_my_appointments_in_month",
+            "function":"getMyAppointmentsInMonth",
+            "method": 1,
+            "requireFields":["month","year" ]
+        },
+        {
+            "path":"/cancel_appoint",
+            "function":"cancelAppointMent",
+            "method": 1,
+            "requireFields":["appointId" ]
+        },
+        {
+            "path":"/reject_appoint",
+            "function":"rejectAppointMent",
+            "method": 1,
+            "requireFields":["appointId" ]
+        },
+        {
+            "path":"/change_time_appoint",
+            "function":"changeTimeAppointMent",
+            "method": 1,
+            "requireFields":["appointId" ,"date"]
         }
     ],
     "middleware":[

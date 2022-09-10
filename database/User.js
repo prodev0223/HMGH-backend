@@ -75,7 +75,7 @@ var mongoosePlugin = require('../utils/mongoose.util');
 
 UserSchema.plugin(mongoosePlugin);
 
-var PublicFields = ['username', 'avatarChild', 'listChild', 'childName', 'fullName', 'childGender', 'childBirthDate','facebookName', 'firstName', 'lastName', 'birthDate', 'registerDate', 'gender', 'email', 'avatar', 'profilePicture', 'about', 'phoneNumber', 'age', 'isActive', 'role', 'status' , 'expiredAt'];
+var PublicFields = ['parentInfo', 'studentInfos', 'schoolInfo','providerInfo','username', 'avatarChild', 'listChild', 'childName', 'fullName', 'childGender', 'childBirthDate','facebookName', 'firstName', 'lastName', 'birthDate', 'registerDate', 'gender', 'email', 'avatar', 'profilePicture', 'about', 'phoneNumber', 'age', 'isActive', 'role', 'status' , 'expiredAt'];
 var UserRole = {
     Super_Admin: 999,
     Admin: 998,

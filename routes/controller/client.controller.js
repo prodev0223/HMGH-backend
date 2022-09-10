@@ -12,8 +12,10 @@ const { validAndCreate1StudentInfo } = require('../bridge/client_user');
 const SchoolSessionModel = require('../../database/SchoolSession');
 
 const socketController = require('../../socket/controller');
+const ApiController = require('./api.controller');
+var mongoose = require('mongoose')
 
-class CustomController extends BaseController {
+class CustomController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200);
     }  
@@ -63,6 +65,15 @@ class CustomController extends BaseController {
             BaseController.generateMessage(res, err);
         })
     }
+
+    static updateParentProfile(req,res){
+        ParentInfoModel.updateParentInfo(req.parsedData).then(student=>{
+            BaseController.generateMessage(res, !student,student);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
 
     static async updateSchedule(req,res){
         var result = [];
@@ -147,11 +158,45 @@ class CustomController extends BaseController {
         })
     }
 
+    static getMyAppointmentsInMonth(req, res){
+        AppointmentModel.aggregate([
+            {$addFields: {  "month" : {$month: '$date'},
+            "year" : {$year: '$date'}
+            }},
+            {$match: { 
+                month: req.parsedData.month,
+                year: req.parsedData.year,
+                requester: req.user.user._id,
+                status:{$in:[0,1]}
+            }}
+            ]).then(result=>{
+                if(!!result && result.length>0){
+                    var populate = [{path:'requester', select: UserModel .PublicFields} , {path: 'dependent' } , {path:'provider'}]
+                    AppointmentModel.populate(result, populate).then(result2=>{
+                        BaseController.generateMessage(res, !result2,result2);
+                    }).catch(er=>{
+                        BaseController.generateMessage(res, err);
+                    })
+                }else{
+                    BaseController.generateMessage(res, !result,result);
+                }
+                
+                
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+    }
+
+    static createSubsidyRequest(req,res){
+
+    }
 
     static updateSubsidyForStudent(req, res){
 
     }
     
-    
+    static cancelSubsidyRequest(req,res){
+        
+    }
 }
 module.exports = CustomController;

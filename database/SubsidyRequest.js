@@ -2,6 +2,13 @@ var mongoose = require('mongoose')
 var Constant = require('../constant.js');
 var { Model, Schema } = mongoose;
 
+var SubsidyRequestStatus = {
+    PENDING: 0,
+    ACCEPTTED:1,
+    DECLINE:-1,
+    CANCELLED:2,
+}
+
 var SubsidyRequestSchema = new Schema({
     id:Number,
     skillSet:Number,
@@ -15,6 +22,8 @@ var SubsidyRequestSchema = new Schema({
     therapistPhone:String,
     note:String,
     documents:[String],
+    status: {type:Number, default:0},
+    dateCreated: {type:Date, default:Date.now}
 });
 
 SubsidyRequestSchema.pre('save', function(next) {
@@ -94,6 +103,7 @@ class SubsidyRequestModel extends Model {
 
 
 mongoose.model(SubsidyRequestModel, SubsidyRequestSchema);
+module.exports.SubsidyRequestStatus = SubsidyRequestStatus;
 module.exports = SubsidyRequestModel;
 Constant.models['SubsidyRequest'] = {
     name: SubsidyRequestModel.name,

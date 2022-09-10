@@ -142,7 +142,8 @@ class ProviderInfoModel extends Model {
     }
 
     static getProviderInfo(id , callback){
-        return ProviderInfoModel.findById(id , callback);
+        return ProviderInfoModel.findById(id , callback).populate('manualSchedule').populate('reduceWithAcademic')
+        .populate('privateCalendars');
     }
 
     static getProviderInfos(data , callback){
