@@ -13,6 +13,7 @@ var SubsidyRequestSchema = new Schema({
     id:Number,
     skillSet:Number,
     school: { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' }, 
+    student: { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' }, 
     requestContactRav: {type:Number , default:1},
     ravPhone: String,
     ravName: String,
@@ -60,6 +61,10 @@ class SubsidyRequestModel extends Model {
         return SubsidyRequestModel.findById(id , callback);
     }
 
+    static getSubsidyRequestFromQuery(query, callback){
+        return SubsidyRequestModel.find(query , callback);
+    }
+
     static getSubsidyRequests(data , callback){
         let options = {};
         options['sort'] = data.sort || { dateSent: -1 };
@@ -73,7 +78,7 @@ class SubsidyRequestModel extends Model {
                     let f = {};
                     if (Array.isArray(data.filter[value])) {
                         if (data.filter[value].length > 0) f[value] = { $in: data.filter[value] }
-                    } else if (typeof data.filter[value] == "number") {
+                    } else if (typeof data.filter[value] == "number" ||typeof data.filter[value] == "object"  ) {
                         f[value] = data.filter[value];
                     } else {
                         f[value] = new RegExp(data.filter[value], 'ig');
@@ -93,6 +98,7 @@ class SubsidyRequestModel extends Model {
             });
         }
         options.select = PublicFields;
+        options.populate = [ {path: 'school' } , {path: 'student' } ];
         return SubsidyRequestModel.paginate(filter, options, callback);
     }
 

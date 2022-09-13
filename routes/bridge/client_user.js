@@ -34,6 +34,10 @@ async function validAndCreateParentInfo(parentInfo){
     });
 }
 
+async function updateSubsidyRequest(){
+
+}
+
 async function validAndCreateStudentInfos(clientInfos){
     if(!clientInfos||clientInfos.length == 0){
         return undefined;
@@ -44,8 +48,9 @@ async function validAndCreateStudentInfos(clientInfos){
         if(!info.availabilitySchedule||info.availabilitySchedule.length == 0){
             return undefined;
         }
+        var newSubsidyRequest = undefined;
         if(!!info.subsidyRequest){
-            var newSubsidyRequest = await validAndCreateSubsidy(info.subsidyRequest);
+            newSubsidyRequest = await validAndCreateSubsidy(info.subsidyRequest);
             if(!newSubsidyRequest){
                 return undefined;
             }
@@ -59,6 +64,16 @@ async function validAndCreateStudentInfos(clientInfos){
         info.availabilitySchedule = newAvailabilitySchedule;
         var newStudent = await StudentInfoModel.createStudentInfo(info).then(student=>{return student._id}).catch(err=>{return undefined;})
         if(!newStudent) return undefined;
+
+        // add student id to subsidy request
+        if(newSubsidyRequest != undefined){
+            await SubsidyRequestModel.updateOne({_id:newSubsidyRequest } , {$set:{student:newStudent }}).then(check=>{
+                console.log(check);
+            }).catch(err=>{
+                console.log(err);
+            })
+        }
+
         listClients.push(newStudent);
     }
     if(listClients.length > 0){

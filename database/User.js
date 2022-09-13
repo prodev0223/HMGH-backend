@@ -56,7 +56,7 @@ var UserSchema = new Schema({
     phoneNumber: { type: String },
     age: Number,
     location: LocationSchema,
-    isActive: Number,
+    isActive: {type:Number, default:0},
     status: { type: String },
     isUpdateFirstTimeProfile: { type: Boolean, default: true },
     role: { type: Number, default: 2 },

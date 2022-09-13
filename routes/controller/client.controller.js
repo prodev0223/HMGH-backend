@@ -16,6 +16,7 @@ const ApiController = require('./api.controller');
 var mongoose = require('mongoose');
 const SchoolInfoModel = require('../../database/SchoolInfo');
 const SubsidyRequestModel = require('../../database/SubsidyRequest');
+const reversePopulate = require('mongoose-reverse-populate-v2');
 
 class CustomController extends ApiController {
     static index(req, res) {
@@ -197,19 +198,20 @@ class CustomController extends ApiController {
             })
     }
 
-    static getMySubsidies(req,res){
-        var searchData = req.parsedData;
-        if( searchData.filter == undefined){
-            searchData.filter = {}
-        }
-        if(searchData.filter.s == undefined){
-            searchData.filter.requester= req.user.user._id;
-        } 
-        if(searchData.filter.status == undefined){
-            searchData.filter.status = 0;
-        }
-        SubsidyRequestModel.getSubsidyRequests().then(result=>{
-
+    static getMySubsRequest(req,res){
+        
+        StudentInfoModel.getStudentInfoByIds(req.user.user.studentInfos).distinct('subsidyRequest').then(subsidaries=>{
+            var searchParams = {
+                _id:{$in:subsidaries}
+            }
+            if(req.parsedData.status != undefined){
+                searchParams.status = req.parsedData.status;
+            }
+            SubsidyRequestModel.getSubsidyRequests(searchParams).then(result =>{
+                BaseController.generateMessage(res, !result,result);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
         }).catch(err=>{
             BaseController.generateMessage(res, err);
         })

@@ -18,7 +18,7 @@ var StudentInfoSchema = new Schema({
     currentGrade:{type:String, require:true}, 
     services: [ { type: Schema.Types.ObjectId, ref: 'StudentServiceModel' }],
     hasIEP:{type:Number, default:1},
-    subsidyRequest:[{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' }],
+    // subsidyRequest:[{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' }],
     availabilitySchedule:[{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
 });
 
@@ -49,8 +49,7 @@ class StudentInfoModel extends Model {
     }
 
     static getStudentInfoByIds(ids, callback){
-        return StudentInfoModel.find({_id:{$in: ids}} , callback).populate('availabilitySchedule')
-        .populate('subsidyRequest').populate('services');
+        return StudentInfoModel.find({_id:{$in: ids}} , callback).populate('availabilitySchedule').populate('services');
     }
 
     static removeAvailabilitySchedule(studentId,availabilityScheduleItem  ){

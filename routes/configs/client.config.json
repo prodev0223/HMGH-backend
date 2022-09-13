@@ -83,6 +83,12 @@
             "function":"getAllSchools",
             "authRequired":0,
             "method":1
+        },
+        
+        {
+            "path":"/get_my_subsidy_requests",
+            "function":"getMySubsRequest",
+            "method":1
         }
         
     ],

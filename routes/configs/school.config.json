@@ -45,7 +45,7 @@
         
         {
             "path":"/get_my_subsidy_requests",
-            "function":"getMySchoolInfo",
+            "function":"getMySubsRequest",
             "method":1
         }
     ],

@@ -47,6 +47,8 @@ class UserController extends BaseController {
             if (user == null) return BaseController.generateMessage(res, ErrorCode.UserNotFound);
             if (user.role == UserModel.getUserRole().Banned) return BaseController.generateMessage(res, ErrorCode.UserBanned);
             if (user.isActive != 1){
+                // user.isActive = 1;
+                // user.save();
                 return BaseController.generateMessage(res, 'Current user is not active');
             }
             var passwordHexed = Utility.createPassword(password)

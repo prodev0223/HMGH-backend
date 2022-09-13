@@ -5,6 +5,7 @@ const fs = require('fs-extra')
 const SchoolCommunityModel = require('../../database/SchoolCommunity')
 const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
+const SubsidyRequestModel = require('../../database/SubsidyRequest')
 
 class SchoolController extends BaseController {
     static index(req, res) {
@@ -65,14 +66,29 @@ class SchoolController extends BaseController {
     }
 
     static getMyProviderProfile(req,res){
-        UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"studentInfos" ).then(id=>{
-            SchoolInfoModel.getSchoolInfo(id).then(provider=>{
-                BaseController.generateMessage(res, !provider,provider);
-            }).catch(err=>{
-                BaseController.generateMessage(res, err);
-            })
+        // UserModel.getFieldValuesFromUserId(req.user.user._id, req.parsedData.fieldName||"studentInfos" ).then(id=>{
+        //     SchoolInfoModel.getSchoolInfo(id).then(provider=>{
+        //         BaseController.generateMessage(res, !provider,provider);
+        //     }).catch(err=>{
+        //         BaseController.generateMessage(res, err);
+        //     })
+        // }).catch(err=>{
+        //     BaseController.generateMessage(res, err);
+        // })
+    }
+
+    static getMySubsRequest(req,res){
+        var searchParams = req.parsedData;
+        if(searchParams.filter == undefined){
+            searchParams.filter = {};
+        }
+        if(searchParams.filter.school == undefined){
+            searchParams.filter.school = req.user.user.schoolInfo;
+        }
+        SubsidyRequestModel.getSubsidyRequests(searchParams).then(result=>{
+            BaseController.generateMessage(res, !result,result)
         }).catch(err=>{
-            BaseController.generateMessage(res, err);
+            BaseController.generateMessage(res, err)
         })
     }
 }
