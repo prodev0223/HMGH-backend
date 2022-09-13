@@ -91,5 +91,13 @@ class SchoolController extends BaseController {
             BaseController.generateMessage(res, err)
         })
     }
+
+    static acceptSubsRequest(req,res){
+
+    }
+
+    static rejectSubsRequest(req,res){
+        
+    }
 }
 module.exports = SchoolController;

@@ -200,18 +200,16 @@ class CustomController extends ApiController {
 
     static getMySubsRequest(req,res){
         
-        StudentInfoModel.getStudentInfoByIds(req.user.user.studentInfos).distinct('subsidyRequest').then(subsidaries=>{
-            var searchParams = {
-                _id:{$in:subsidaries}
-            }
-            if(req.parsedData.status != undefined){
-                searchParams.status = req.parsedData.status;
-            }
-            SubsidyRequestModel.getSubsidyRequests(searchParams).then(result =>{
-                BaseController.generateMessage(res, !result,result);
-            }).catch(err=>{
-                BaseController.generateMessage(res, err);
-            })
+        
+        var searchParams = req.parsedData;
+        if(searchParams.filter == undefined){
+            searchParams.filter = {};
+        }
+        if(searchParams.filter.student == undefined){
+            searchParams.filter.student = {$in:req.user.user.studentInfos};
+        }
+        SubsidyRequestModel.getSubsidyRequests(searchParams).then(result =>{
+            BaseController.generateMessage(res, !result,result);
         }).catch(err=>{
             BaseController.generateMessage(res, err);
         })
@@ -227,6 +225,10 @@ class CustomController extends ApiController {
     }
     
     static cancelSubsidyRequest(req,res){
+        
+    }
+
+    static appealSubsidyRequest(req,res){
         
     }
 }
