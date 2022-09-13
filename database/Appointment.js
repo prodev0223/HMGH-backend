@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
 var Constant = require('../constant.js');
+const StudentInfoModel = require('./StudentInfo.js');
 var { Model, Schema } = mongoose;
 const UserModel = require('./User')
 
@@ -17,6 +18,7 @@ var AppointmentSchema = new Schema({
     dependent: { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' },
     provider:  { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
     date: {type:Date},
+    subsidyOnly:{type:Number, default:1},
     status: {type:Number , default: AppoinmentStatus.PENDING},
     reason: String,
     note:String,
@@ -55,6 +57,12 @@ class AppointmentModel extends Model {
 
     static getAppointment(id , callback){
         return AppointmentModel.findById(id , callback);
+    }
+
+    static getAllDependentFromProvider(providerId , callback){
+        return AppointmentModel.find({provider:providerId} ,callback).distinct('dependent').then(listDepent=>{
+            return StudentInfoModel.populate(listDepent);
+        });
     }
 
     static getAppointments(data , callback){

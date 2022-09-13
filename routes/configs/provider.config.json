@@ -41,6 +41,11 @@
             "method": 1
         },
         {
+            "path":"/get_old_dependents",
+            "function":"getOldDependents",
+            "method": 1
+        },
+        {
             "path":"/get_my_appointments",
             "function":"getListAppoinmentRequestedMe",
             "method": 1

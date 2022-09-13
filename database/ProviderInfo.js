@@ -85,7 +85,7 @@ var ProviderInfoSchema = new Schema({
     skillSet: {type:Number , require:true},
     yearExp: {type:Number , require:true},
     SSN:{type:Number , require:true},
-    serviceableSchool: {type:String , require:true},
+    serviceableSchool: [{ type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' } ],
     academicLevel:[AcademicLevelSchema],
     W9FormPath: [String],
     references: String,

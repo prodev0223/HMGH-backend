@@ -12,7 +12,7 @@ var SubsidyRequestStatus = {
 var SubsidyRequestSchema = new Schema({
     id:Number,
     skillSet:Number,
-    school: String,
+    school: { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' }, 
     requestContactRav: {type:Number , default:1},
     ravPhone: String,
     ravName: String,

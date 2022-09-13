@@ -13,12 +13,12 @@ var StudentInfoSchema = new Schema({
     guardianPhone:{type:String, require:true}, 
     guardianEmail:{type:String, require:true}, 
     backgroundInfor:{type:String, require:true}, 
-    school:{type:String, require:true}, 
+    school:{ type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' }, 
     primaryTeacher:{type:String, require:true}, 
     currentGrade:{type:String, require:true}, 
     services: [ { type: Schema.Types.ObjectId, ref: 'StudentServiceModel' }],
     hasIEP:{type:Number, default:1},
-    subsidyRequest:{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' },
+    subsidyRequest:[{ type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' }],
     availabilitySchedule:[{type: Schema.Types.ObjectId, ref: 'SchoolSessionModel'}],
 });
 

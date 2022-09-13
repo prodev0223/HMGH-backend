@@ -82,6 +82,14 @@ class ProviderController extends ApiController {
         })
     }
 
+    static getOldDependents(req,res){
+        AppointmentModel.getAllDependentFromProvider(req.user.user.providerInfo).then(data=>{
+            BaseController.generateMessage(res, !data,data);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
     static getMyAppointmentsInMonth(req, res){
         AppointmentModel.aggregate([
             {$addFields: {  "month" : {$month: '$date'},

@@ -49,7 +49,7 @@ async function validAndCreateStudentInfos(clientInfos){
             if(!newSubsidyRequest){
                 return undefined;
             }
-            info.subsidyRequest = newSubsidyRequest;
+            info.subsidyRequest = [newSubsidyRequest];
         }
         var newAvailabilitySchedule = await validAndCreateSchoolSessions(info.availabilitySchedule);
         if(!newAvailabilitySchedule || newAvailabilitySchedule.length == 0){

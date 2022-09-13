@@ -41,6 +41,12 @@
             "path":"/get_my_school_info",
             "function":"getMySchoolInfo",
             "method":1
+        },
+        
+        {
+            "path":"/get_my_subsidy_requests",
+            "function":"getMySchoolInfo",
+            "method":1
         }
     ],
     "middleware":[

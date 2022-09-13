@@ -21,7 +21,7 @@ function initUser(){
     var userRole = UserModel.getUserRole();
     UserModel.countDocuments ({ 'email': 'admin@admin.com' }).then(number => {
         if (!number) {
-        return UserModel.create({ fullName: 'admin', email: 'admin@admin.com', password: Utility.createPassword('admin'), role: userRole.Super_Admin });
+        return UserModel.create({ isActive:1,fullName: 'admin', email: 'admin@admin.com', password: Utility.createPassword('admin'), role: userRole.Super_Admin });
         }
         return Promise.resolve();
     }).then(user => {

@@ -46,6 +46,10 @@ class SchoolInfoModel extends Model {
         return SchoolInfoModel.create(data ,callback)
     }
 
+    static getAllSchoolName(callback){
+        return SchoolInfoModel.find().select('name _id');
+    }
+
     static updateSchoolInfo( data, callback){
         return SchoolInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }

@@ -13,12 +13,22 @@ const SchoolSessionModel = require('../../database/SchoolSession');
 
 const socketController = require('../../socket/controller');
 const ApiController = require('./api.controller');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+const SchoolInfoModel = require('../../database/SchoolInfo');
+const SubsidyRequestModel = require('../../database/SubsidyRequest');
 
 class CustomController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200);
     }  
+
+    static getAllSchools(req,res){
+        SchoolInfoModel.getAllSchoolName().then(schools=>{
+            BaseController.generateMessage(res, !schools,schools);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
 
     static getDefaultValueForClient(req, res) {
         StudentServiceModel.find().then(listServices=>{
@@ -185,6 +195,25 @@ class CustomController extends ApiController {
             }).catch(err=>{
                 BaseController.generateMessage(res, err);
             })
+    }
+
+    static getMySubsidies(req,res){
+        var searchData = req.parsedData;
+        if( searchData.filter == undefined){
+            searchData.filter = {}
+        }
+        if(searchData.filter.s == undefined){
+            searchData.filter.requester= req.user.user._id;
+        } 
+        if(searchData.filter.status == undefined){
+            searchData.filter.status = 0;
+        }
+        SubsidyRequestModel.getSubsidyRequests().then(result=>{
+
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+        
     }
 
     static createSubsidyRequest(req,res){
