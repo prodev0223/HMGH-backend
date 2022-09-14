@@ -6,8 +6,14 @@ const SchoolCommunityModel = require('../../database/SchoolCommunity')
 const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
 const AppointmentModel = require('../../database/Appointment')
+const socketController = require('../../socket/controller');
 
 class ApiController extends BaseController {
+
+    static emitFromHttp(room, key , error , data){
+        socketController.emitFromHttp( room, key, error , data  );
+    }
+
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
     }

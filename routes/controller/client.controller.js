@@ -217,7 +217,13 @@ class CustomController extends ApiController {
     }
 
     static createSubsidyRequest(req,res){
-
+        
+        SubsidyRequestModel.createSubsidyRequest(req.parsedData).then(sub=>{
+            BaseController.generateMessage(res, !sub,sub);
+            socketController.emitFromHttp( sub.school, 'new_subsidy_request_from_client', 0 , sub  );
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
     }
 
     static updateSubsidyForStudent(req, res){

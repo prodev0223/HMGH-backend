@@ -6,6 +6,7 @@ const SchoolCommunityModel = require('../../database/SchoolCommunity')
 const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
+const ApiController = require('./api.controller')
 
 class SchoolController extends BaseController {
     static index(req, res) {
@@ -93,11 +94,24 @@ class SchoolController extends BaseController {
     }
 
     static acceptSubsRequest(req,res){
+        
+        SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED}}).then(result=>{
+            BaseController.generateMessage(res, !result,result)
 
+            ApiController.emitFromHttp()
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
     }
 
     static rejectSubsRequest(req,res){
-        
+        SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.DECLINE}}).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+
+            ApiController.emitFromHttp()
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
     }
 }
 module.exports = SchoolController;

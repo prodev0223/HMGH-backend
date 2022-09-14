@@ -24,7 +24,9 @@ var SubsidyRequestSchema = new Schema({
     note:String,
     documents:[String],
     status: {type:Number, default:0},
-    dateCreated: {type:Date, default:Date.now}
+    dateCreated: {type:Date, default:Date.now},
+    hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
+    
 });
 
 SubsidyRequestSchema.pre('save', function(next) {

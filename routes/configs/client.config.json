@@ -75,8 +75,7 @@
         {
             "path":"/create_subsidy_request",
             "function":"createSubsidyRequest",
-            "method": 1,
-            "requireFields":["schoolInfo" ,"studentInfo"]
+            "method": 1
         },
         {
             "path":"/get_all_schools",
