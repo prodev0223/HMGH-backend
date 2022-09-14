@@ -33,6 +33,13 @@
             "path": "/clients",
             "description": "",
             "configFile": "client.config.json"
+        },
+        {
+            "name": "admin",
+            "pathToFile": "./routes/clients",
+            "path": "/administratorapicontrol",
+            "description": "",
+            "configFile": "admin.config.json"
         }
     ]
 }

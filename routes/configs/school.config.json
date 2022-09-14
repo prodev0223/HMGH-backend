@@ -65,6 +65,12 @@
             "function":"rejectSubsRequest",
             "requireFields":["subsidyId" ],
             "method":1
+        },
+        {
+            "path":"/get_all_provider_in_school",
+            "function":"getAllProviderInSchool",
+            "requireFields":["schoolId" ],
+            "method":1
         }
     ],
     "middleware":[

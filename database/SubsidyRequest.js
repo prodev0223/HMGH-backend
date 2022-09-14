@@ -27,6 +27,7 @@ var SubsidyRequestSchema = new Schema({
     adminApprovalStatus: {type:Number, default:0},
     dateCreated: {type:Date, default:Date.now},
     hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
+    providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }],
     
 });
 
@@ -69,7 +70,15 @@ class SubsidyRequestModel extends Model {
     }
 
     static getSubsidyRequest(id , callback){
-        return SubsidyRequestModel.findById(id , callback).populate([{path: 'school' } , {path: 'student' } , {path: 'hierachy' }]);
+        return SubsidyRequestModel.findById(id , callback).populate([
+            {path: 'school' } , 
+            {
+                path: 'student' , 
+                populate : {
+                    path : 'school'
+                }
+            } , 
+            {path: 'hierachy' }]);
     }
 
     static getSubsidyRequestFromQuery(query, callback){

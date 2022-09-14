@@ -137,6 +137,10 @@ class ProviderInfoModel extends Model {
         return ProviderInfoModel.create(data ,callback)
     }
 
+    static getAllProviderInSchool(schoolId){
+        return ProviderInfoModel.find({serviceableSchool:schoolId}).select('name _id');
+    }
+
     static updateProviderInfo( data, callback){
         return ProviderInfoModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }

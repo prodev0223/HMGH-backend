@@ -7,6 +7,7 @@ const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
 const ApiController = require('./api.controller')
+const ProviderInfoModel = require('../../database/ProviderInfo')
 
 class SchoolController extends ApiController {
     static index(req, res) {
@@ -123,6 +124,14 @@ class SchoolController extends ApiController {
         // }).catch(err=>{
         //     BaseController.generateMessage(res, err)
         // })
+    }
+
+    static getAllProviderInSchool(req,res){
+        ProviderInfoModel.getAllProviderInSchool(req.parsedData.schoolId).then(providers=>{
+            BaseController.generateMessage(res, !providers,providers)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
     }
 }
 module.exports = SchoolController;
