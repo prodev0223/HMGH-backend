@@ -24,6 +24,7 @@ var SubsidyRequestSchema = new Schema({
     note:String,
     documents:[String],
     status: {type:Number, default:0},
+    adminApprovalStatus: {type:Number, default:0},
     dateCreated: {type:Date, default:Date.now},
     hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
     
@@ -55,12 +56,20 @@ class SubsidyRequestModel extends Model {
         return SubsidyRequestModel.create(data ,callback)
     }
 
+    static updateSubsidyWithReturnData(_id , fieldName , value ){
+        return SubsidyRequestModel.findOne({_id: _id}).then(subsidy=>{
+            subsidy[fieldName] = value;
+            subsidy.save();
+            return subsidy;
+        });
+    }
+
     static updateSubsidyRequest( data, callback){
         return SubsidyRequestModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
     }
 
     static getSubsidyRequest(id , callback){
-        return SubsidyRequestModel.findById(id , callback);
+        return SubsidyRequestModel.findById(id , callback).populate([{path: 'school' } , {path: 'student' } , {path: 'hierachy' }]);
     }
 
     static getSubsidyRequestFromQuery(query, callback){
@@ -100,7 +109,7 @@ class SubsidyRequestModel extends Model {
             });
         }
         options.select = PublicFields;
-        options.populate = [ {path: 'school' } , {path: 'student' } ];
+        options.populate = [ {path: 'school' } , {path: 'student' } , {path: 'hierachy' }];
         return SubsidyRequestModel.paginate(filter, options, callback);
     }
 

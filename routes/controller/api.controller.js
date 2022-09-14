@@ -7,6 +7,7 @@ const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
 const AppointmentModel = require('../../database/Appointment')
 const socketController = require('../../socket/controller');
+const SubsidyRequestModel = require('../../database/SubsidyRequest')
 
 class ApiController extends BaseController {
 
@@ -52,14 +53,22 @@ class ApiController extends BaseController {
         })
     }
 
-    static getByStatus(req, res){
-        AppointmentModel.updateAppointment({
-            _id: req.parsedData.appointId , 
-            date: req.parsedData.date
-        }).then(result=>{
-            BaseController.generateMessage(res, 0,result)
+    static getAppointmentByStatus(req, res){
+        // AppointmentModel.updateAppointment({
+        //     _id: req.parsedData.appointId , 
+        //     date: req.parsedData.date
+        // }).then(result=>{
+        //     BaseController.generateMessage(res, 0,result)
+        // }).catch(err=>{
+        //     BaseController.generateMessage(res, err)
+        // })
+    }
+
+    static getSubsidyDetail(req,res){
+        SubsidyRequestModel.getSubsidyRequest(req.parsedData.subsidyId).then(result=>{
+            BaseController.generateMessage(res, !result,result);
         }).catch(err=>{
-            BaseController.generateMessage(res, err)
+            BaseController.generateMessage(res, err);
         })
     }
 

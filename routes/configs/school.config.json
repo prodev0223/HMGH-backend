@@ -47,6 +47,24 @@
             "path":"/get_my_subsidy_requests",
             "function":"getMySubsRequest",
             "method":1
+        },
+        {
+            "path":"/get_subsidy_detail",
+            "function":"getSubsidyDetail",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/accept_subsidy_request",
+            "function":"acceptSubsRequest",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/deny_subsidy_request",
+            "function":"rejectSubsRequest",
+            "requireFields":["subsidyId" ],
+            "method":1
         }
     ],
     "middleware":[

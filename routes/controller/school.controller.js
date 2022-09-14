@@ -8,7 +8,7 @@ const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
 const ApiController = require('./api.controller')
 
-class SchoolController extends BaseController {
+class SchoolController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
     }
@@ -94,24 +94,35 @@ class SchoolController extends BaseController {
     }
 
     static acceptSubsRequest(req,res){
-        
-        SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED}}).then(result=>{
-            BaseController.generateMessage(res, !result,result)
-
-            ApiController.emitFromHttp()
+        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED ).then(subsidy=>{
+            BaseController.generateMessage(res, !subsidy,subsidy)
+            ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })
+        // SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED}}).then(result=>{
+        //     BaseController.generateMessage(res, !result,result)
+
+        //     ApiController.emitFromHttp()
+        // }).catch(err=>{
+        //     BaseController.generateMessage(res, err)
+        // })
     }
 
     static rejectSubsRequest(req,res){
-        SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.DECLINE}}).then(result=>{
-            BaseController.generateMessage(res, !result,result)
-
-            ApiController.emitFromHttp()
+        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , SubsidyRequestModel.SubsidyRequestStatus.DECLINE ).then(subsidy=>{
+            BaseController.generateMessage(res, !subsidy,subsidy)
+            ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })
+        // SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.DECLINE}}).then(result=>{
+        //     BaseController.generateMessage(res, !result,result)
+
+        //     ApiController.emitFromHttp()
+        // }).catch(err=>{
+        //     BaseController.generateMessage(res, err)
+        // })
     }
 }
 module.exports = SchoolController;
