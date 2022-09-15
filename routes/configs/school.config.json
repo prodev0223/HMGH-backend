@@ -57,7 +57,7 @@
         {
             "path":"/accept_subsidy_request",
             "function":"acceptSubsRequest",
-            "requireFields":["subsidyId" ],
+            "requireFields":["subsidyId" , "student", "providers", "decisionExplanation"],
             "method":1
         },
         {

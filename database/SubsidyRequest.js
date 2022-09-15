@@ -28,7 +28,7 @@ var SubsidyRequestSchema = new Schema({
     dateCreated: {type:Date, default:Date.now},
     hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
     providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }],
-    
+    decisionExplanation: String,
 });
 
 SubsidyRequestSchema.pre('save', function(next) {

@@ -17,12 +17,16 @@ var AppointmentSchema = new Schema({
     skillSet: [Number],
     dependent: { type: Schema.Types.ObjectId, ref: 'StudentInfoModel' },
     provider:  { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
+    school:  { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' },
     date: {type:Date},
     subsidyOnly:{type:Number, default:1},
     status: {type:Number , default: AppoinmentStatus.PENDING},
     reason: String,
     note:String,
+    typeForAppoint: {type:Number, default:0},
     location:String,
+    type: {type:Number, default:0},
+
 });
 
 AppointmentSchema.pre('save', function(next) {

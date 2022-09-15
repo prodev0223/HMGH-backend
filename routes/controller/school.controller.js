@@ -95,23 +95,37 @@ class SchoolController extends ApiController {
     }
 
     static acceptSubsRequest(req,res){
-        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED ).then(subsidy=>{
-            BaseController.generateMessage(res, !subsidy,subsidy)
-            ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
-        }).catch(err=>{
-            BaseController.generateMessage(res, err)
-        })
-        // SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: {status: SubsidyRequestModel.SubsidyRequestStatus.ACCEPTTED}}).then(result=>{
-        //     BaseController.generateMessage(res, !result,result)
-
-        //     ApiController.emitFromHttp()
+        // SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , 0 ).then(subsidy=>{
+        //     BaseController.generateMessage(res, !subsidy,subsidy)
+        //     ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
         // }).catch(err=>{
         //     BaseController.generateMessage(res, err)
         // })
+        SubsidyRequestModel.updateOne({_id:req.parsedData.subsidyId} , 
+            {$set: {
+            status: 1,
+            providers:req.parsedData.providers,
+            decisionExplanation: req.parsedData.decisionExplanation,
+
+        }}).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+            ApiController.emitFromHttp(req.parsedData.student ,'subsidy_change_status' ,  !result ,req.parsedData.subsidyId);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
     }
 
     static rejectSubsRequest(req,res){
-        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , SubsidyRequestModel.SubsidyRequestStatus.DECLINE ).then(subsidy=>{
+        // var setData = {status: SubsidyRequestModel.SubsidyRequestStatus.DECLINE};
+        // SubsidyRequestModel.updateSubsidyRequest(req.parsedData._id , {$set: setData} ).then(result=>{
+        //     BaseController.generateMessage(res, !result,result)
+
+        //     ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
+        // }).catch(err=>{
+        //     BaseController.generateMessage(res, err)
+        // })
+
+        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' ,-1).then(subsidy=>{
             BaseController.generateMessage(res, !subsidy,subsidy)
             ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
         }).catch(err=>{

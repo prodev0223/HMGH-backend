@@ -138,7 +138,7 @@ class ProviderInfoModel extends Model {
     }
 
     static getAllProviderInSchool(schoolId){
-        return ProviderInfoModel.find({serviceableSchool:schoolId}).select('name _id');
+        return ProviderInfoModel.find({serviceableSchool:schoolId}).select('name referredToAs _id')
     }
 
     static updateProviderInfo( data, callback){
