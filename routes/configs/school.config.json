@@ -71,6 +71,24 @@
             "function":"getAllProviderInSchool",
             "requireFields":["schoolId" ],
             "method":1
+        },
+        {
+            "path":"/get_all_hierachy",
+            "function":"getAllHierachy",
+            "requireFields":["schoolId" ],
+            "method":1
+        },
+        {
+            "path":"/create_hierachy",
+            "function":"createHieRachy",
+            "requireFields":["schoolId","name" ],
+            "method":1
+        },
+        {
+            "path":"/change_hierachy",
+            "function":"changeHierachyForSubsidy",
+            "requireFields":["subsidyId" , "hierachyId" ],
+            "method":1
         }
     ],
     "middleware":[

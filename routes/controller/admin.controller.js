@@ -12,5 +12,13 @@ class AdminController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
     }
+
+    static getSubsidyRequests(req,res){
+        SubsidyRequestModel.getSubsidyRequests(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, !result, result );
+        }).catch(err=>{
+            BaseController.generateMessage(res,err)
+        })
+    }
 }
 module.exports = AdminController;

@@ -87,7 +87,7 @@ class SubsidyRequestModel extends Model {
 
     static getSubsidyRequests(data , callback){
         let options = {};
-        options['sort'] = data.sort || { dateSent: -1 };
+        options['sort'] = data.sort || { id: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
         if (data.page != undefined) options['page'] = Number(data.page);
         let filter = {};
@@ -118,7 +118,8 @@ class SubsidyRequestModel extends Model {
             });
         }
         options.select = PublicFields;
-        options.populate = [ {path: 'school' } , {path: 'student' } , {path: 'hierachy' }];
+        options.populate = [ {path: 'school' },{path:'providers'} , {path: 'student' } , {path: 'hierachy' }];
+        
         return SubsidyRequestModel.paginate(filter, options, callback);
     }
 

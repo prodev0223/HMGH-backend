@@ -6,8 +6,12 @@
             "path":"/",
             "function":"index",
             "authRequired":0
+        },
+        {
+            "path":"/get_subsidy_requests",
+            "function":"getSubsidyRequests",
+            "method":1
         }
-        
     ],
     "middleware":[
         "permission", 

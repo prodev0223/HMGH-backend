@@ -8,6 +8,7 @@ const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
 const ApiController = require('./api.controller')
 const ProviderInfoModel = require('../../database/ProviderInfo')
+const HierachyModel = require('../../database/Hierachy')
 
 class SchoolController extends ApiController {
     static index(req, res) {
@@ -143,6 +144,31 @@ class SchoolController extends ApiController {
     static getAllProviderInSchool(req,res){
         ProviderInfoModel.getAllProviderInSchool(req.parsedData.schoolId).then(providers=>{
             BaseController.generateMessage(res, !providers,providers)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static createHieRachy(req,res){
+        req.parsedData.createdBy = req.user.user._id;
+        HierachyModel.createHierachy(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static getAllHierachy(req,res){
+        HierachyModel.find({schoolId: req.parsedData.schoolId}).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static changeHierachyForSubsidy(req,res){
+        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'hierachy' ,req.parsedData.hierachyId).then(subsidy=>{
+            BaseController.generateMessage(res, !subsidy,subsidy)
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })

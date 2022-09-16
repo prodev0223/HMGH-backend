@@ -5,6 +5,8 @@ var { Model, Schema } = mongoose;
 var HierachySchema = new Schema({
     id:Number,
     name: String,
+    createdBy:{ type: Schema.Types.ObjectId, ref: 'UserModel' },
+    schoolId: { type: Schema.Types.ObjectId, ref: 'SchoolInfoModel' },
 });
 
 HierachySchema.pre('save', function(next) {
