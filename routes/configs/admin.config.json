@@ -11,6 +11,66 @@
             "path":"/get_subsidy_requests",
             "function":"getSubsidyRequests",
             "method":1
+        },
+        {
+            "path":"/get_subsidy_detail",
+            "function":"getSubsidyDetail",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/accept_subsidy_request",
+            "function":"acceptSubsRequest",
+            "requireFields":["subsidyId" , "student", "providers", "decisionExplanation"],
+            "method":1
+        },
+        {
+            "path":"/deny_subsidy_request",
+            "function":"rejectSubsRequest",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/get_all_provider_in_school",
+            "function":"getAllProviderInSchool",
+            "requireFields":["schoolId" ],
+            "method":1
+        },
+        {
+            "path":"/get_all_hierachy",
+            "function":"getAllHierachy",
+            "requireFields":["schoolId" ],
+            "method":1
+        },
+        {
+            "path":"/create_hierachy",
+            "function":"createHieRachy",
+            "requireFields":["schoolId","name" ],
+            "method":1
+        },
+        {
+            "path":"/change_hierachy",
+            "function":"changeHierachyForSubsidy",
+            "requireFields":["subsidyId" , "hierachyId" ],
+            "method":1
+        },
+        {
+            "path":"/create_consulation_to_subsidy",
+            "function":"createConsulation",
+            "requireFields":["subsidyId" ,"typeForAppointLocation"],
+            "method":1
+        },
+        {
+            "path":"/change_consulation",
+            "function":"editConsulation",
+            "requireFields":["consulationId" ],
+            "method":1
+        },
+        {
+            "path":"/select_final_provider_for_subsidy",
+            "function":"selectProviderForSubsidy",
+            "requireFields":["subsidyId", "selectedProvider" ],
+            "method":1
         }
     ],
     "middleware":[

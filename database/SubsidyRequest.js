@@ -27,8 +27,12 @@ var SubsidyRequestSchema = new Schema({
     adminApprovalStatus: {type:Number, default:0},
     dateCreated: {type:Date, default:Date.now},
     hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
-    providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }],
+    providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }], // list suggest provider from school
+    consulation:{ type: Schema.Types.ObjectId, ref: 'AppointmentModel' },
     decisionExplanation: String,
+    selectedProvider: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
+    numberOfSessions: {type:Number, default:0},
+    priceForSession: {type:Number, default:0},
 });
 
 SubsidyRequestSchema.pre('save', function(next) {
@@ -78,6 +82,7 @@ class SubsidyRequestModel extends Model {
                     path : 'school'
                 }
             } , 
+            {path: 'consulation' },
             {path: 'hierachy' }]);
     }
 

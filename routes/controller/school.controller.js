@@ -128,7 +128,7 @@ class SchoolController extends ApiController {
 
         SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' ,-1).then(subsidy=>{
             BaseController.generateMessage(res, !subsidy,subsidy)
-            ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy);
+            ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy._id);
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })

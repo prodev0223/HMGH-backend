@@ -23,10 +23,11 @@ var AppointmentSchema = new Schema({
     status: {type:Number , default: AppoinmentStatus.PENDING},
     reason: String,
     note:String,
-    typeForAppoint: {type:Number, default:0},
+    typeForAppointLocation: {type:Number, default:0},
     location:String,
     type: {type:Number, default:0},
-
+    phoneNumber:{type:String, default:''},
+    name:{type:String, default:''},
 });
 
 AppointmentSchema.pre('save', function(next) {

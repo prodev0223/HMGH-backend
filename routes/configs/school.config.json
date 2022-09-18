@@ -89,6 +89,18 @@
             "function":"changeHierachyForSubsidy",
             "requireFields":["subsidyId" , "hierachyId" ],
             "method":1
+        },
+        {
+            "path":"/create_consulation_to_subsidy",
+            "function":"createConsulation",
+            "requireFields":["subsidyId" ,"typeForAppointLocation"],
+            "method":1
+        },
+        {
+            "path":"/change_consulation",
+            "function":"editConsulation",
+            "requireFields":["consulationId" ],
+            "method":1
         }
     ],
     "middleware":[

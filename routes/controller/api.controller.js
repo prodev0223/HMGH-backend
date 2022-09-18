@@ -72,5 +72,38 @@ class ApiController extends BaseController {
         })
     }
 
+    static createConsulation(req,res){
+        var newAppoint = {
+            requester: req.user.user._id,
+            school: req.parsedData.school,
+            dependent: req.parsedData.dependent,
+            skillSet:req.parsedData.skillSet,
+            typeForAppointLocation: req.parsedData.typeForAppointLocation ,
+            location: req.parsedData.location,
+            date:req.parsedData.date,
+            name: req.parsedData.name,
+            type: 1,// Consulation
+        };
+        AppointmentModel.createAppointment(newAppoint).then(result=>{
+            SubsidyRequestModel.updateOne({_id: req.parsedData.subsidyId } , {$set: {consulation: result._id}}).then(()=>{
+                BaseController.generateMessage(res, !result,result._id);
+            }).catch(err=>{
+                BaseController.generateMessage(res, err);
+            })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+    static editConsulation(req,res){
+        req.parsedData._id = req.parsedData.consulationId;
+        AppointmentModel.updateAppointment(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, !result,result);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+    
+
 }
 module.exports = ApiController;
