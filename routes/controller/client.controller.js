@@ -234,7 +234,7 @@ class CustomController extends ApiController {
     static appealSubsidy(req,res){
         SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'isAppeal' ,1).then(subsidy=>{
             BaseController.generateMessage(res, !subsidy,subsidy)
-            ApiController.emitFromHttp(subsidy.school.toString() ,'subsidy_change_status' ,  !subsidy,subsidy._id);
+            ApiController.emitFromHttp(subsidy.school.toString() ,'appeal_subsidy' ,  !subsidy,subsidy._id);
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })
