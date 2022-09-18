@@ -25,7 +25,7 @@ var SkillSet = [
     "OT – Carry over",
     "Play Therapy",
     "Reading Specialist",
-    "Referrer – an admin is of type referrer, this option is only available to admin.",
+    "Referrer",
     "Social Worker",
     "Speech Therapy",
 ];
