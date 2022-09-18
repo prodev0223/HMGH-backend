@@ -33,6 +33,7 @@ var SubsidyRequestSchema = new Schema({
     selectedProvider: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
     numberOfSessions: {type:Number, default:0},
     priceForSession: {type:Number, default:0},
+    isAppeal:{type:Number , default:0},
 });
 
 SubsidyRequestSchema.pre('save', function(next) {

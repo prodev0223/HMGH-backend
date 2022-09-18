@@ -104,6 +104,17 @@ class ApiController extends BaseController {
         })
     }
     
-
+    static denyAppealSubsidy(req,res){
+        SubsidyRequestModel.updateOne({_id:req.parsedData.subsidyId} , 
+            {$set: {
+            isAppeal:-1,
+            status:-1,
+        }}).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+            ApiController.emitFromHttp(req.parsedData.student ,'subsidy_change_status' ,  !result ,req.parsedData.subsidyId);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
 }
 module.exports = ApiController;

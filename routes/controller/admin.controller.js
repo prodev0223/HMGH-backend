@@ -55,7 +55,7 @@ class AdminController extends ApiController {
         SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'adminApprovalStatus' ,-1).then(subsidy=>{
             BaseController.generateMessage(res, !subsidy,subsidy)
             ApiController.emitFromHttp(subsidy.student.toString() ,'subsidy_change_status' ,  !subsidy,subsidy._id);
-            ApiController.emitFromHttp(subsidy.school.toString() ,'subsidy_change_status' ,  !result ,req.parsedData.subsidyId);
+            ApiController.emitFromHttp(subsidy.school.toString() ,'subsidy_change_status' ,  !subsidy ,subsidy._id);
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })

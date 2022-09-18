@@ -101,6 +101,12 @@
             "function":"editConsulation",
             "requireFields":["consulationId" ],
             "method":1
+        },
+        {
+            "path":"/deny_appeal_subsidy",
+            "function":"denyAppealSubsidy",
+            "requireFields":["subsidyId" ],
+            "method":1
         }
     ],
     "middleware":[

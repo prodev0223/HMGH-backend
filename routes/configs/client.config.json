@@ -106,6 +106,12 @@
             "function":"editConsulation",
             "requireFields":["consulationId" ],
             "method":1
+        },
+        {
+            "path":"/appeal_subsidy",
+            "function":"appealSubsidy",
+            "requireFields":["subsidyId" ],
+            "method":1
         }
         
     ],

@@ -158,8 +158,11 @@ class CustomController extends ApiController {
         if( searchData.filter == undefined){
             searchData.filter = {}
         }
-        if(searchData.filter.requester == undefined){
-            searchData.filter.requester= req.user.user._id;
+        // if(searchData.filter.requester == undefined){
+        //     searchData.filter.requester= req.user.user._id;
+        // }
+        if(searchData.filter.dependent == undefined){
+            searchData.filter.dependent= {$in:req.user.user.studentInfos}
         }
         searchData.sort = {date:1};
         AppointmentModel.getAppointments(searchData).then(data=>{
@@ -225,6 +228,15 @@ class CustomController extends ApiController {
             socketController.emitFromHttp( sub.school, 'new_subsidy_request_from_client', 0 , sub  );
         }).catch(err=>{
             BaseController.generateMessage(res, err);
+        })
+    }
+
+    static appealSubsidy(req,res){
+        SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'isAppeal' ,1).then(subsidy=>{
+            BaseController.generateMessage(res, !subsidy,subsidy)
+            ApiController.emitFromHttp(subsidy.school.toString() ,'subsidy_change_status' ,  !subsidy,subsidy._id);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
         })
     }
 
