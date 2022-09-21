@@ -52,6 +52,10 @@ class StudentInfoModel extends Model {
         return StudentInfoModel.find({_id:{$in: ids}} , callback).populate('availabilitySchedule').populate('services');
     }
 
+    static getStudentInfoBySchoolId(schoolId, callback){
+        return StudentInfoModel.find({school:schoolId} , callback);//.populate('availabilitySchedule').populate('services');
+    }
+
     static removeAvailabilitySchedule(studentId,availabilityScheduleItem  ){
         return StudentInfoModel.findById(id).then(student=>{
             student.availabilitySchedule.splice(availabilityScheduleItem);

@@ -6,6 +6,7 @@ const SchoolCommunityModel = require('../../database/SchoolCommunity')
 const SchoolInfoModel = require('../../database/SchoolInfo')
 const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
+const HierachyModel =require('../../database/Hierachy')
 const ApiController = require('./api.controller')
 
 class AdminController extends ApiController {
@@ -98,6 +99,7 @@ class AdminController extends ApiController {
         req.parsedData.createdBy = req.user.user._id;
         HierachyModel.createHierachy(req.parsedData).then(result=>{
             BaseController.generateMessage(res, !result,result)
+
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })

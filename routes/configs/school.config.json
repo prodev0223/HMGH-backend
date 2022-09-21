@@ -33,6 +33,11 @@
             "authRequired":0
         },
         {
+            "path":"/get_school_info",
+            "function":"getSchoolInfo",
+            "method":1
+        },
+        {
             "path":"/update_school_info",
             "function":"updateSchoolInfo",
             "middleware":[]
@@ -85,15 +90,9 @@
             "method":1
         },
         {
-            "path":"/change_hierachy",
-            "function":"changeHierachyForSubsidy",
-            "requireFields":["subsidyId" , "hierachyId" ],
-            "method":1
-        },
-        {
             "path":"/create_consulation_to_subsidy",
             "function":"createConsulation",
-            "requireFields":["subsidyId" ,"typeForAppointLocation"],
+            "requireFields":["typeForAppointLocation"],
             "method":1
         },
         {
@@ -105,6 +104,17 @@
         {
             "path":"/deny_appeal_subsidy",
             "function":"denyAppealSubsidy",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/get_my_dependents",
+            "function":"getMyDependent",
+            "method":1
+        },
+        {
+            "path":"/get_last_consulation",
+            "function":"getLastConsulation",
             "requireFields":["subsidyId" ],
             "method":1
         }

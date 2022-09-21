@@ -98,7 +98,7 @@
         {
             "path":"/create_consulation_to_subsidy",
             "function":"createConsulation",
-            "requireFields":["subsidyId" ,"typeForAppointLocation"],
+            "requireFields":["typeForAppointLocation"],
             "method":1
         },
         {
@@ -110,6 +110,12 @@
         {
             "path":"/appeal_subsidy",
             "function":"appealSubsidy",
+            "requireFields":["subsidyId" ],
+            "method":1
+        },
+        {
+            "path":"/get_last_consulation",
+            "function":"getLastConsulation",
             "requireFields":["subsidyId" ],
             "method":1
         }

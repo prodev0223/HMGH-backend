@@ -42,7 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(cors({
-  origin:["http://localhost:3090","http://localhost:8100", "http://localhost:8000","http://localhost:3000","http://kyniema4.hopto.org:3090"],
+  origin:["http://localhost:3090","http://localhost:8100", "http://localhost:8000","http://localhost:3000",
+  "http://kyniema4.hopto.org:3090" , "http://kyniema4.hopto.org:3000", "http://dev.hmgh.org:3000","http://dev.hmgh.org:3090"],
   methods:"GET,PUT,POST,DELETE, OPTIONS",
   allowedHeaders: ['Content-Type', 'Authorization, X-Requested-With, Accept, Cache-Control, Origin, token'],
   credentials:true

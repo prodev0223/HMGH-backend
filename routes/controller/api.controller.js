@@ -83,13 +83,15 @@ class ApiController extends BaseController {
             date:req.parsedData.date,
             name: req.parsedData.name,
             type: 1,// Consulation
+            subsidy:req.parsedData.subsidy,
         };
         AppointmentModel.createAppointment(newAppoint).then(result=>{
-            SubsidyRequestModel.updateOne({_id: req.parsedData.subsidyId } , {$set: {consulation: result._id}}).then(()=>{
-                BaseController.generateMessage(res, !result,result._id);
-            }).catch(err=>{
-                BaseController.generateMessage(res, err);
-            })
+            BaseController.generateMessage(res, !result,result._id);
+            // SubsidyRequestModel.updateOne({_id: req.parsedData.subsidyId } , {$set: {consulation: result._id}}).then(()=>{
+            //     BaseController.generateMessage(res, !result,result._id);
+            // }).catch(err=>{
+            //     BaseController.generateMessage(res, err);
+            // })
         }).catch(err=>{
             BaseController.generateMessage(res, err);
         })
@@ -112,6 +114,14 @@ class ApiController extends BaseController {
         }}).then(result=>{
             BaseController.generateMessage(res, !result,result)
             ApiController.emitFromHttp(req.parsedData.student ,'subsidy_change_status' ,  !result ,req.parsedData.subsidyId);
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static getLastConsulation(req,res){
+        AppointmentModel.getLastAppointmentBySubsidyId(req.parsedData.subsidyId).then(result=>{
+            BaseController.generateMessage(res, !result ,result)
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })

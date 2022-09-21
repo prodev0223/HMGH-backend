@@ -55,7 +55,7 @@ class SchoolInfoModel extends Model {
     }
 
     static getSchoolInfo(id , callback){
-        return SchoolInfoModel.findById(id , callback);
+        return SchoolInfoModel.findById(id , callback).populate('sessionsInSchool sessionsAfterSchool');
     }
 
     static getSchoolInfos(data , callback){

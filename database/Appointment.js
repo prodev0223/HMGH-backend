@@ -28,6 +28,8 @@ var AppointmentSchema = new Schema({
     type: {type:Number, default:0},
     phoneNumber:{type:String, default:''},
     name:{type:String, default:''},
+    subsidy:  { type: Schema.Types.ObjectId, ref: 'SubsidyRequestModel' },
+    addtionalDocuments: [String],
 });
 
 AppointmentSchema.pre('save', function(next) {
@@ -58,6 +60,10 @@ class AppointmentModel extends Model {
 
     static updateAppointment( data, callback){
         return AppointmentModel.findByIdAndUpdate(data._id, { $set: data }, { new: true } , callback)
+    }
+
+    static getLastAppointmentBySubsidyId(subsidyId){
+        return AppointmentModel.findOne({subsidy: subsidyId}).sort({id:-1});
     }
 
     static getAppointment(id , callback){

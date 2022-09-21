@@ -28,12 +28,12 @@ var SubsidyRequestSchema = new Schema({
     dateCreated: {type:Date, default:Date.now},
     hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
     providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }], // list suggest provider from school
-    consulation:{ type: Schema.Types.ObjectId, ref: 'AppointmentModel' },
     decisionExplanation: String,
     selectedProvider: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
     numberOfSessions: {type:Number, default:0},
     priceForSession: {type:Number, default:0},
     isAppeal:{type:Number , default:0},
+    orderPosition:Number
 });
 
 SubsidyRequestSchema.pre('save', function(next) {
@@ -47,8 +47,10 @@ SubsidyRequestSchema.pre('save', function(next) {
         }
         if(err || last == null){
             doc.id = 1;
+            doc.orderPosition = 1;
         }else{
             doc.id = last.id + 1;
+            doc.orderPosition = last.id + 1;
         }
         next();
     })

@@ -9,7 +9,8 @@ const SubsidyRequestModel = require('../../database/SubsidyRequest')
 const ApiController = require('./api.controller')
 const ProviderInfoModel = require('../../database/ProviderInfo')
 const HierachyModel = require('../../database/Hierachy')
-
+const StudentInfoModel = require('../../database/StudentInfo');
+const AppointmentModel = require('../../database/Appointment')
 class SchoolController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
@@ -25,6 +26,14 @@ class SchoolController extends ApiController {
 
     static createCommunicatesServed(req,res){
         SchoolCommunityModel.createSchoolCommunity(req.parsedData).then(result=>{
+            BaseController.generateMessage(res, 0,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static async getSchoolInfo(req,res){
+        SchoolInfoModel.getSchoolInfo(req.parsedData.schoolId).then(result=>{
             BaseController.generateMessage(res, 0,result)
         }).catch(err=>{
             BaseController.generateMessage(res, err)
@@ -47,13 +56,6 @@ class SchoolController extends ApiController {
         })
     }
 
-    static async getSchoolInfo(req, res){
-        SchoolInfoModel.getSchoolInfo(req.parsedData).then(result=>{
-            BaseController.generateMessage(res, 0,result)
-        }).catch(err=>{
-            BaseController.generateMessage(res, err)
-        })
-    }
 
     static async getMySchoolInfo(req, res){
         
@@ -63,6 +65,14 @@ class SchoolController extends ApiController {
             }).catch(err=>{
                 BaseController.generateMessage(res, err);
             })
+        }).catch(err=>{
+            BaseController.generateMessage(res, err);
+        })
+    }
+
+    static getMyDependent(req,res){
+        StudentInfoModel.getStudentInfoBySchoolId(req.user.user.schoolInfo).then(students=>{
+            BaseController.generateMessage(res, !students,students);
         }).catch(err=>{
             BaseController.generateMessage(res, err);
         })
@@ -94,6 +104,8 @@ class SchoolController extends ApiController {
             BaseController.generateMessage(res, err)
         })
     }
+
+    
 
     static acceptSubsRequest(req,res){
         // SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'status' , 0 ).then(subsidy=>{
@@ -169,6 +181,7 @@ class SchoolController extends ApiController {
     static changeHierachyForSubsidy(req,res){
         SubsidyRequestModel.updateSubsidyWithReturnData(req.parsedData.subsidyId , 'hierachy' ,req.parsedData.hierachyId).then(subsidy=>{
             BaseController.generateMessage(res, !subsidy,subsidy)
+
         }).catch(err=>{
             BaseController.generateMessage(res, err)
         })
