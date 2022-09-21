@@ -83,7 +83,8 @@ class ApiController extends BaseController {
             date:req.parsedData.date,
             name: req.parsedData.name,
             type: 1,// Consulation
-            subsidy:req.parsedData.subsidy,
+            subsidy:req.parsedData.subsidyId,
+            phoneNumber: req.parsedData.phoneNumber,
         };
         AppointmentModel.createAppointment(newAppoint).then(result=>{
             BaseController.generateMessage(res, !result,result._id);
