@@ -105,6 +105,21 @@ class SchoolController extends ApiController {
         })
     }
 
+    static getAllSubsRequestOrderByHierachy(req,res){
+        SubsidyRequestModel.getAllSubsidyRequestForHierachy(req.user.user.schoolInfo).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
+
+    static sortSubsidaryByHierachy(req,res){
+        SubsidyRequestModel.sortSubsidaryByHierachy(req.parsedData.orderedList).then(result=>{
+            BaseController.generateMessage(res, !result,result)
+        }).catch(err=>{
+            BaseController.generateMessage(res, err)
+        })
+    }
     
 
     static acceptSubsRequest(req,res){

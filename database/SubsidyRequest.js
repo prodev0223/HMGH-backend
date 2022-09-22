@@ -93,9 +93,32 @@ class SubsidyRequestModel extends Model {
         return SubsidyRequestModel.find(query , callback);
     }
 
+    static getAllSubsidyRequestForHierachy(schoolId, callback){
+        return SubsidyRequestModel.find({school: schoolId,$or:[
+            {status:1,},
+            {adminApprovalStatus:1,}
+        ] }, callback).populate('student providers').sort({orderPosition:-1});
+    }
+
+    static sortSubsidaryByHierachy(list , callback){
+        var arr = [];
+        for(var i = 0 ; i< list.length ; i++){
+            arr.push({
+                updateOne: {
+                  filter: { _id: list[i]._id },
+                  // If you were using the MongoDB driver directly, you'd need to do
+                  // `update: { $set: { title: ... } }` but mongoose adds $set for
+                  // you.
+                  update: { orderPosition: list[i].orderPosition }
+                }
+            })
+        }
+        return SubsidyRequestModel.bulkWrite(arr)
+    }
+
     static getSubsidyRequests(data , callback){
         let options = {};
-        options['sort'] = data.sort || { id: -1 };
+        options['sort'] = data.sort || { orderPosition: -1 };
         if (data.limit != undefined) options['limit'] = Number(data.limit);
         if (data.page != undefined) options['page'] = Number(data.page);
         let filter = {};

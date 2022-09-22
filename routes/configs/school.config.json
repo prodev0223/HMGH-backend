@@ -117,6 +117,17 @@
             "function":"getLastConsulation",
             "requireFields":["subsidyId" ],
             "method":1
+        },
+        {
+            "path":"/get_all_sub_order_by_hierachy",
+            "function":"getAllSubsRequestOrderByHierachy",
+            "method":1
+        },
+        {
+            "path":"/sort_subsidary_by_hierachy",
+            "function":"sortSubsidaryByHierachy",
+            "requireFields":["orderedList" ],
+            "method":1
         }
     ],
     "middleware":[
