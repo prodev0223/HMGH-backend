@@ -8,14 +8,58 @@ const UserModel = require('../../database/User')
 const SubsidyRequestModel = require('../../database/SubsidyRequest')
 const HierachyModel =require('../../database/Hierachy')
 const ApiController = require('./api.controller')
+const StudentInfoModel = require('../../database/StudentInfo')
 
 class AdminController extends ApiController {
     static index(req, res) {
         BaseController.generateMessage(res, 0, 1, 200)
     }
 
-    static getSubsidyRequests(req,res){
-        SubsidyRequestModel.getSubsidyRequests(req.parsedData).then(result=>{
+    static async getSubsidyRequests(req,res){
+
+        var searchData = req.parsedData;
+        if(searchData.filter == undefined){
+            searchData.filter = {};
+        }
+        if(!!searchData.filterSchool){
+            var arrIds = await SchoolInfoModel.find({name:{ '$regex': searchData.filterSchool, '$options': 'i' }} ).distinct('_id').catch(err=>{ return []});
+            searchData.filter.school = {$in: arrIds};
+        }
+
+        if(!!searchData.filterStudent){
+            var arrIds = await StudentInfoModel.find({
+                $or:[
+                   { firstName:{ '$regex': searchData.filterStudent, '$options': 'i' }},
+                    {lastName:{ '$regex': searchData.filterStudent, '$options': 'i' }}
+                ]
+                
+            } ).distinct('_id').catch(err=>{ return []});
+            searchData.filter.student = {$in: arrIds};
+        }
+
+        if(!!searchData.filterProvider){
+            var arrIds = await SchoolInfoModel.find({
+                $or:[
+                   { name:{ '$regex': searchData.filterProvider, '$options': 'i' }},
+                    {referredToAs:{ '$regex': searchData.filterProvider, '$options': 'i' }}
+                ]
+                
+            }).distinct('_id').catch(err=>{ return []});
+            searchData.filter.selectedProvider = {$in: arrIds};
+        }
+
+        if(!!searchData.filterStatus){
+            
+            searchData.filter.status = {
+                $or:[
+                    { status: searchData.filterStatus},
+                    {adminApprovalStatus:searchData.filterStatus}
+                ]
+                
+            };
+        }
+
+        SubsidyRequestModel.getSubsidyRequests(searchData).then(result=>{
             BaseController.generateMessage(res, !result, result );
         }).catch(err=>{
             BaseController.generateMessage(res,err)

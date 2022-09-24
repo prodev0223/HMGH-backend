@@ -26,7 +26,6 @@ var SubsidyRequestSchema = new Schema({
     status: {type:Number, default:0},
     adminApprovalStatus: {type:Number, default:0},
     dateCreated: {type:Date, default:Date.now},
-    hierachy: { type: Schema.Types.ObjectId, ref: 'HierachyModel' }, 
     providers: [{ type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' }], // list suggest provider from school
     decisionExplanation: String,
     selectedProvider: { type: Schema.Types.ObjectId, ref: 'ProviderInfoModel' },
@@ -84,9 +83,7 @@ class SubsidyRequestModel extends Model {
                 populate : {
                     path : 'school'
                 }
-            } , 
-            {path: 'consulation' },
-            {path: 'hierachy' }]);
+            } ]);
     }
 
     static getSubsidyRequestFromQuery(query, callback){
@@ -149,7 +146,22 @@ class SubsidyRequestModel extends Model {
             });
         }
         options.select = PublicFields;
-        options.populate = [ {path: 'school' },{path:'providers'} , {path: 'student' } , {path: 'hierachy' }];
+
+        var arrPopulate = [];
+        if(data.populate){
+            arrPopulate = data.populate;
+            
+        }else{
+            arrPopulate = [ {path: 'school' },{path:'providers'} , {path: 'student' } ];
+            
+        }
+        // if(data.addtionalPopulate!=undefined && data.addtionalPopulate.length>0){
+        //     arrPopulate.push(data.addtionalPopulate.map(item=>{
+        //         if(!item.path) return {path:item  };
+        //         return item;
+        //     }))
+        // }
+        options.populate = arrPopulate;//[ {path: 'school' },{path:'providers'} , {path: 'student' } , {path: 'hierachy' }];
         
         return SubsidyRequestModel.paginate(filter, options, callback);
     }
