@@ -48,16 +48,16 @@ class AdminController extends ApiController {
             searchData.filter.selectedProvider = {$in: arrIds};
         }
 
-        if(!!searchData.filterStatus){
+        // if(!!searchData.filterStatus){
             
-            searchData.filter.status = {
-                $or:[
-                    { status: searchData.filterStatus},
-                    {adminApprovalStatus:searchData.filterStatus}
-                ]
+        //     searchData.filter.status = {
+        //         $or:[
+        //             { status: searchData.filterStatus},
+        //             {adminApprovalStatus:searchData.filterStatus}
+        //         ]
                 
-            };
-        }
+        //     };
+        // }
 
         SubsidyRequestModel.getSubsidyRequests(searchData).then(result=>{
             BaseController.generateMessage(res, !result, result );

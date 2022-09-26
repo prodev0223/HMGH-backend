@@ -4,7 +4,7 @@
     "controllers":[
         {
             "path":"/",
-            "function":"index",
+            "function":"testSendMail",
             "authRequired":0
         },
         {

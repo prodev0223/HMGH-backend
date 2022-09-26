@@ -4,6 +4,7 @@ const path = require('path');
 const tempResetPassword = ejs.compile(fs.readFileSync(path.join(__dirname, 'forgot_password.ejs'), 'utf8'), { cache: true, filename: 'forgot_password.ejs' });
 const tempSupport = ejs.compile(fs.readFileSync(path.join(__dirname, 'support.ejs'), 'utf8'), { cache: true, filename: 'support.ejs' });
 const tempActive = ejs.compile(fs.readFileSync(path.join(__dirname, 'active.ejs'), 'utf8'), { cache: true, filename: 'active.ejs' });
+const tempTestMail = ejs.compile(fs.readFileSync(path.join(__dirname, 'test_mail.ejs'), 'utf8'), { cache: true, filename: 'test_mail.ejs' });
 const Constant = require('../../constant')
 const { mailConfig } = Constant;
 const nodeMailer = require('nodemailer')
@@ -104,11 +105,32 @@ function sendEmailActive(data, callback) {
   }).asCallback(callback);
 }
 
+function sendEmailActive(data, callback) {
+  
+  return new Promise(async function (resolve, reject) {
+    let mailOptions = {
+      from: mailConfig.admin_email,
+      to: data.to,
+      replyTo: mailConfig.admin_email,
+      subject: data.subject || 'Active Email!',
+      html: tempTestMail(data)
+    };
 
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log('send mail error: ' + JSON.stringify(error));
+        return reject(error);
+      }
+      console.log('Message sent: %s', info.messageId);
+      resolve(info);
+    });
+  }).asCallback(callback);
+}
 
 
 module.exports = {
   sendEmailResetPassword,
   sendEmailActive,
   sendSupportEmail,
+
 }

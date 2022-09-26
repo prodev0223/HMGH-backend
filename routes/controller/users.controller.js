@@ -176,6 +176,7 @@ class UserController extends BaseController {
             if(isNeedSendMail){
                 let mailOptions = {
                     to: userEmail,
+                    name:data.user.username,
                     frontend_url: Constant.frontendUrl +'/login/v' + hexedCode
                 };
                 mailController
@@ -262,6 +263,7 @@ class UserController extends BaseController {
             // }
             let mailOptions = {
                 to: email,
+                name: user.username,
                 forgot_code: token,
             };
             return mailController
@@ -544,6 +546,7 @@ class UserController extends BaseController {
                 if(isNeedSendMail){
                     let mailOptions = {
                         to: userEmail,
+                        name: user.username,
                         frontend_url: Constant.frontendUrl +'/login/v' + hexedCode
                     };
                     mailController
@@ -562,8 +565,15 @@ class UserController extends BaseController {
         })
     }
     
-    static testSendMail(){
-
+    static testSendMail(req,res){
+        var mailOptions = {
+            title:"test send mail",
+            to:"tdinhphuoc@gmail.com",
+        }
+        mailController
+                    .sendEmailActive(mailOptions , function(err,info){
+                        BaseController.generateMessage(res, err, info)
+                    })
     }
 }
 module.exports = UserController;
