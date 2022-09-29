@@ -105,27 +105,6 @@ function sendEmailActive(data, callback) {
   }).asCallback(callback);
 }
 
-function sendEmailActive(data, callback) {
-  
-  return new Promise(async function (resolve, reject) {
-    let mailOptions = {
-      from: mailConfig.admin_email,
-      to: data.to,
-      replyTo: mailConfig.admin_email,
-      subject: data.subject || 'Active Email!',
-      html: tempTestMail(data)
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log('send mail error: ' + JSON.stringify(error));
-        return reject(error);
-      }
-      console.log('Message sent: %s', info.messageId);
-      resolve(info);
-    });
-  }).asCallback(callback);
-}
 
 
 module.exports = {
